@@ -73,6 +73,9 @@ jobs:
       - name: Code format
         run: mix format --check-formatted
 
+      - name: Linter
+        run: mix credo
+
       - name: Unused dependencies
         run: mix deps.unlock --check-unused
 
