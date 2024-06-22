@@ -19,12 +19,17 @@
   <:col :let={{_id, product}} label="Creted by"><%= product.user.email %></:col>
   <:action :let={{_id, product}}>
     <div class="sr-only">
-      <.link navigate={~p"/products/#{product}"}>Show</.link>
+      <.link navigate={~p"/products/#{product}"} class="text-zinc-700 dark:text-zinc-300">
+        Show
+      </.link>
     </div>
-    <.link patch={~p"/products/#{product}/edit"}>Edit</.link>
+    <.link patch={~p"/products/#{product}/edit"} class="text-zinc-700 dark:text-zinc-300">
+      Edit
+    </.link>
   </:action>
   <:action :let={{id, product}}>
     <.link
+      class="text-zinc-700 dark:text-zinc-300"
       phx-click={JS.push("delete", value: %{id: product.id}) |> hide("##{id}")}
       data-confirm="Are you sure?"
     >
