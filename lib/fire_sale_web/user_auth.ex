@@ -1,4 +1,7 @@
 defmodule FireSaleWeb.UserAuth do
+  @moduledoc """
+  User authentication module
+  """
   use FireSaleWeb, :verified_routes
 
   import Plug.Conn

@@ -1,4 +1,10 @@
 defmodule FireSale.Accounts.UserNotifier do
+  @moduledoc """
+  Notification dispatcher for user information around:
+
+  - Email confirmation
+  - Order confirmation
+  """
   import Swoosh.Email
 
   alias FireSale.Mailer

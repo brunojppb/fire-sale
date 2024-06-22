@@ -1,4 +1,7 @@
 defmodule FireSale.Accounts.User do
+  @moduledoc """
+  User account throuthout the app
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

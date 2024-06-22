@@ -1,4 +1,11 @@
 defmodule FireSale.Accounts.UserToken do
+  @moduledoc """
+  Generic token to be associated with the user for:
+
+  * Resetting passwords
+  * Confirming emails
+  * Auth sessions
+  """
   use Ecto.Schema
   import Ecto.Query
   alias FireSale.Accounts.UserToken
