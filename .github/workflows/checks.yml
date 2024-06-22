@@ -1,0 +1,83 @@
+name: Checks
+on: push
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  FORCE_COLOR: 2
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: postgres:15
+        ports: ["5432:5432"]
+        env:
+          POSTGRES_USER: fire_sale
+          POSTGRES_PASSWORD: fire_sale
+          POSTGRES_DB: fire_sale_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Read tooling version from .tool-versions
+        id: tool-versions
+        run: |
+          ERLANG_VERSION_FROM_FILE=$(awk 'NR==1{print $2}' .tool-versions)
+          ELIXIR_VERSION_FROM_FILE=$(awk 'NR==2' .tool-versions | awk 'NR==1{print $2}')
+          echo "Erlang version: ${ERLANG_VERSION_FROM_FILE}"
+          echo "Elixir version: ${ELIXIR_VERSION_FROM_FILE}"
+          echo "erlang=$ERLANG_VERSION_FROM_FILE" >> "$GITHUB_OUTPUT"
+          echo "elixir=$ELIXIR_VERSION_FROM_FILE" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Elixir
+        uses: erlef/setup-beam@v1
+        id: beam
+        with:
+          otp-version: ${{ steps.tool-versions.outputs.erlang }}
+          elixir-version: ${{ steps.tool-versions.outputs.elixir }}
+
+      - name: Fetch cached dependencies
+        uses: actions/cache@v3
+        id: mix-cache
+        with:
+          path: |
+            deps
+            _build
+            priv/plts
+          key: |
+            ${{ runner.os }}-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ hashFiles('mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}-${{ hashFiles('mix.lock') }}
+            ${{ runner.os }}-${{ steps.beam.outputs.elixir-version }}-${{ steps.beam.outputs.otp-version }}
+
+      - name: Install dependencies
+        run: mix deps.get
+
+      - name: Dialyzer
+        run: mix dialyzer
+
+      # Create PLTs for dialyzer checks
+      - name: Create PLTs
+        if: steps.mix-cache.outputs.cache-hit != 'true'
+        run: mix dialyzer --plt
+
+      - name: Code format
+        run: mix format --check-formatted
+
+      - name: Unused dependencies
+        run: mix deps.unlock --check-unused
+
+      - name: Compile
+        run: mix compile --warnings-as-errors
+
+      - name: Tests
+        run: mix test --trace --color
