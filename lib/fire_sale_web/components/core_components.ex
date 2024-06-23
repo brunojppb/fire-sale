@@ -50,7 +50,11 @@ defmodule FireSaleWeb.CoreComponents do
       data-cancel={JS.exec(@on_cancel, "phx-remove")}
       class="relative z-50 hidden"
     >
-      <div id={"#{@id}-bg"} class="bg-zinc-50/90 fixed inset-0 transition-opacity" aria-hidden="true" />
+      <div
+        id={"#{@id}-bg"}
+        class="bg-zinc-50/90 dark:bg-zinc-900/90 fixed inset-0 transition-opacity"
+        aria-hidden="true"
+      />
       <div
         class="fixed inset-0 overflow-y-auto"
         aria-labelledby={"#{@id}-title"}
@@ -66,7 +70,7 @@ defmodule FireSaleWeb.CoreComponents do
               phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
               phx-key="escape"
               phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
-              class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded-2xl bg-white p-14 shadow-lg ring-1 transition"
+              class="shadow-zinc-700/10 dark:shadow-zinc-50/10 ring-zinc-700/10 dark:ring-zinc-50/10 relative hidden rounded-2xl bg-background p-14 shadow-lg ring-1 transition"
             >
               <div class="absolute top-6 right-5">
                 <button
@@ -202,7 +206,7 @@ defmodule FireSaleWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="mt-10 space-y-8 bg-white">
+      <div class="mt-10 space-y-8">
         <%= render_slot(@inner_block, f) %>
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           <%= render_slot(action, f) %>
@@ -276,7 +280,7 @@ defmodule FireSaleWeb.CoreComponents do
   attr :type, :string,
     default: "text",
     values: ~w(checkbox color date datetime-local email file month number password
-               range search select tel text textarea time url week)
+               range search select tel text textarea time url week tag)
 
   attr :field, Phoenix.HTML.FormField,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
@@ -302,6 +306,31 @@ defmodule FireSaleWeb.CoreComponents do
     |> input()
   end
 
+  # Extremely simple input type for handling tags in a CSV-like style
+  # with a normal input field.
+  def input(%{type: "tag", value: nil} = assigns) do
+    assigns
+    |> assign(:value, "")
+    |> assign(:type, "text")
+    |> input()
+  end
+
+  # Extremely simple input type for handling tags in a CSV-like style
+  # with a normal input field.
+  def input(%{type: "tag"} = assigns) do
+    val =
+      if is_binary(assigns.value) do
+        assigns.value
+      else
+        Enum.join(assigns.value, ",")
+      end
+
+    assigns
+    |> assign(:value, val)
+    |> assign(:type, "text")
+    |> input()
+  end
+
   def input(%{type: "checkbox"} = assigns) do
     assigns =
       assign_new(assigns, :checked, fn ->
@@ -310,7 +339,7 @@ defmodule FireSaleWeb.CoreComponents do
 
     ~H"""
     <div>
-      <label class="flex items-center gap-4 text-sm leading-6 text-zinc-600">
+      <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
         <input type="hidden" name={@name} value="false" disabled={@rest[:disabled]} />
         <input
           type="checkbox"
@@ -318,7 +347,7 @@ defmodule FireSaleWeb.CoreComponents do
           name={@name}
           value="true"
           checked={@checked}
-          class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
+          class="flex w-full h-10 px-3 py-2 text-sm border rounded-md border-input bg-white dark:bg-zinc-700 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           {@rest}
         />
         <%= @label %>
@@ -335,7 +364,10 @@ defmodule FireSaleWeb.CoreComponents do
       <select
         id={@id}
         name={@name}
-        class="mt-2 block w-full rounded-md border border-gray-300 bg-white shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm"
+        class={[
+          "bg-white dark:bg-zinc-800",
+          "mt-2 block w-full rounded-md border border-gray-300 shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm"
+        ]}
         multiple={@multiple}
         {@rest}
       >
@@ -355,7 +387,8 @@ defmodule FireSaleWeb.CoreComponents do
         id={@id}
         name={@name}
         class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6 min-h-[6rem]",
+          "mt-2 block w-full rounded-lg text-zinc-900 dark:text-zinc-300 focus:ring-0 sm:text-sm sm:leading-6 min-h-[6rem]",
+          "bg-white dark:bg-zinc-800",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
@@ -377,7 +410,9 @@ defmodule FireSaleWeb.CoreComponents do
         id={@id}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
+          "bg-white dark:bg-zinc-800",
+          "flex h-10 w-full rounded-md border border-input px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+          "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
@@ -396,7 +431,7 @@ defmodule FireSaleWeb.CoreComponents do
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="block text-sm font-semibold leading-6 text-zinc-800">
+    <label for={@for} class="block text-sm font-semibold leading-6 text-zinc-800 dark:text-zinc-300">
       <%= render_slot(@inner_block) %>
     </label>
     """
@@ -429,7 +464,7 @@ defmodule FireSaleWeb.CoreComponents do
     ~H"""
     <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
       <div>
-        <h1 class="text-lg font-semibold leading-8 text-zinc-800">
+        <h1 class="text-lg font-semibold leading-8 text-zinc-800 dark:text-zinc-300">
           <%= render_slot(@inner_block) %>
         </h1>
         <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
@@ -475,7 +510,7 @@ defmodule FireSaleWeb.CoreComponents do
     ~H"""
     <div class="overflow-y-auto px-4 sm:overflow-visible sm:px-0">
       <table class="w-[40rem] mt-11 sm:w-full">
-        <thead class="text-sm text-left leading-6 text-zinc-500">
+        <thead class="text-sm text-left leading-6 text-zinc-500 dark:text-zinc-50">
           <tr>
             <th :for={col <- @col} class="p-0 pb-4 pr-6 font-normal"><%= col[:label] %></th>
             <th :if={@action != []} class="relative p-0 pb-4">
@@ -486,24 +521,37 @@ defmodule FireSaleWeb.CoreComponents do
         <tbody
           id={@id}
           phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
-          class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700"
+          class={[
+            "text-zinc-700 dark:text-zinc-300",
+            "relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6"
+          ]}
         >
-          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="group hover:bg-zinc-50">
+          <tr
+            :for={row <- @rows}
+            id={@row_id && @row_id.(row)}
+            class="group hover:bg-zinc-50 dark:hover:bg-zinc-900"
+          >
             <td
               :for={{col, i} <- Enum.with_index(@col)}
               phx-click={@row_click && @row_click.(row)}
               class={["relative p-0", @row_click && "hover:cursor-pointer"]}
             >
               <div class="block py-4 pr-6">
-                <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-50 sm:rounded-l-xl" />
-                <span class={["relative", i == 0 && "font-semibold text-zinc-900"]}>
+                <span class={[
+                  "absolute -inset-y-px right-0 -left-4 sm:rounded-l-xl",
+                  "group-hover:bg-zinc-50 dark:group-hover:bg-zinc-900"
+                ]} />
+                <span class={["relative", i == 0 && "font-semibold text-zinc-900 dark:text-zinc-300"]}>
                   <%= render_slot(col, @row_item.(row)) %>
                 </span>
               </div>
             </td>
             <td :if={@action != []} class="relative w-14 p-0">
               <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
-                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 sm:rounded-r-xl" />
+                <span class={[
+                  "group-hover:bg-zinc-50 dark:group-hover:bg-zinc-900",
+                  "absolute -inset-y-px -right-4 left-0 sm:rounded-r-xl"
+                ]} />
                 <span
                   :for={action <- @action}
                   class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
@@ -539,7 +587,7 @@ defmodule FireSaleWeb.CoreComponents do
       <dl class="-my-4 divide-y divide-zinc-100">
         <div :for={item <- @item} class="flex gap-4 py-4 text-sm leading-6 sm:gap-8">
           <dt class="w-1/4 flex-none text-zinc-500"><%= item.title %></dt>
-          <dd class="text-zinc-700"><%= render_slot(item) %></dd>
+          <dd class="text-zinc-700 dark:text-zinc-50"><%= render_slot(item) %></dd>
         </div>
       </dl>
     </div>
@@ -561,7 +609,10 @@ defmodule FireSaleWeb.CoreComponents do
     <div class="mt-16">
       <.link
         navigate={@navigate}
-        class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+        class={[
+          "text-zinc-900 hover:text-zinc-700 dark:text-zinc-50",
+          "text-sm font-semibold leading-6"
+        ]}
       >
         <.icon name="hero-arrow-left-solid" class="h-3 w-3" />
         <%= render_slot(@inner_block) %>
@@ -594,6 +645,32 @@ defmodule FireSaleWeb.CoreComponents do
   def icon(%{name: "hero-" <> _} = assigns) do
     ~H"""
     <span class={[@name, @class]} />
+    """
+  end
+
+  @doc """
+  Renders a badge.
+  """
+  attr :value, :string, required: true
+
+  def badge(%{value: value} = assigns) do
+    classes = [
+      "bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300",
+      "bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300",
+      "bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300",
+      "bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300",
+      "bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300",
+      "bg-indigo-100 text-indigo-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300",
+      "bg-purple-100 text-purple-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300",
+      "bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300"
+    ]
+
+    style_index = Kernel.rem(String.length(value), length(classes))
+    class = Enum.at(classes, style_index)
+    assigns = assign(assigns, :class, class)
+
+    ~H"""
+    <span class={@class}><%= @value %></span>
     """
   end
 

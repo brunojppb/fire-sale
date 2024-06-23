@@ -1,0 +1,43 @@
+<.header>
+  Product <%= @product.id %>
+  <:actions>
+    <.link patch={~p"/products/#{@product}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit product</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @product.name %></:item>
+  <:item title="Description"><%= @product.description %></:item>
+  <:item title="Price"><%= @product.price %></:item>
+  <:item title="Tags">
+    <div>
+      <%= for tag <- @product.tags do %>
+        <.badge value={tag} />
+      <% end %>
+    </div>
+  </:item>
+  <:item title="Created at">
+    <%= Calendar.strftime(@product.inserted_at, "%d.%m.%Y %I:%M:%S") %>
+  </:item>
+</.list>
+
+<.back navigate={~p"/products"}>Back to products</.back>
+
+<.modal
+  :if={@live_action == :edit}
+  id="product-modal"
+  show
+  on_cancel={JS.patch(~p"/products/#{@product}")}
+>
+  <.live_component
+    module={FireSaleWeb.ProductLive.FormComponent}
+    id={@product.id}
+    title={@page_title}
+    action={@live_action}
+    product={@product}
+    current_user={@current_user}
+    patch={~p"/products/#{@product}"}
+  />
+</.modal>
