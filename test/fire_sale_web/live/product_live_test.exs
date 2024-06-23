@@ -9,15 +9,15 @@ defmodule FireSaleWeb.ProductLiveTest do
     name: "some name",
     description: "some description",
     price: "120.5",
-    tags: ["option1", "option2"]
+    tags: "option1,option2"
   }
   @update_attrs %{
     name: "some updated name",
     description: "some updated description",
     price: "456.7",
-    tags: ["option1"]
+    tags: "option1"
   }
-  @invalid_attrs %{name: nil, description: nil, price: nil, tags: []}
+  @invalid_attrs %{name: nil, description: nil, price: nil, tags: nil}
 
   defp create_product(%{current_user: user}) do
     product = product_fixture(%{user_id: user.id})

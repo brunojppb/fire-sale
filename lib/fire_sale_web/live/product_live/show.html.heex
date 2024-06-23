@@ -1,6 +1,5 @@
 <.header>
   Product <%= @product.id %>
-  <:subtitle>This is a product record from your database.</:subtitle>
   <:actions>
     <.link patch={~p"/products/#{@product}/show/edit"} phx-click={JS.push_focus()}>
       <.button>Edit product</.button>
@@ -12,7 +11,16 @@
   <:item title="Name"><%= @product.name %></:item>
   <:item title="Description"><%= @product.description %></:item>
   <:item title="Price"><%= @product.price %></:item>
-  <:item title="Tags"><%= @product.tags %></:item>
+  <:item title="Tags">
+    <div>
+      <%= for tag <- @product.tags do %>
+        <.badge value={tag} />
+      <% end %>
+    </div>
+  </:item>
+  <:item title="Created at">
+    <%= Calendar.strftime(@product.inserted_at, "%d.%m.%Y %I:%M:%S") %>
+  </:item>
 </.list>
 
 <.back navigate={~p"/products"}>Back to products</.back>

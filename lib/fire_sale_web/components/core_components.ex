@@ -280,7 +280,7 @@ defmodule FireSaleWeb.CoreComponents do
   attr :type, :string,
     default: "text",
     values: ~w(checkbox color date datetime-local email file month number password
-               range search select tel text textarea time url week)
+               range search select tel text textarea time url week tag)
 
   attr :field, Phoenix.HTML.FormField,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
@@ -303,6 +303,31 @@ defmodule FireSaleWeb.CoreComponents do
     |> assign(:errors, Enum.map(errors, &translate_error(&1)))
     |> assign_new(:name, fn -> if assigns.multiple, do: field.name <> "[]", else: field.name end)
     |> assign_new(:value, fn -> field.value end)
+    |> input()
+  end
+
+  # Extremely simple input type for handling tags in a CSV-like style
+  # with a normal input field.
+  def input(%{type: "tag", value: nil} = assigns) do
+    assigns
+    |> assign(:value, "")
+    |> assign(:type, "text")
+    |> input()
+  end
+
+  # Extremely simple input type for handling tags in a CSV-like style
+  # with a normal input field.
+  def input(%{type: "tag"} = assigns) do
+    val =
+      if is_binary(assigns.value) do
+        assigns.value
+      else
+        Enum.join(assigns.value, ",")
+      end
+
+    assigns
+    |> assign(:value, val)
+    |> assign(:type, "text")
     |> input()
   end
 
@@ -562,7 +587,7 @@ defmodule FireSaleWeb.CoreComponents do
       <dl class="-my-4 divide-y divide-zinc-100">
         <div :for={item <- @item} class="flex gap-4 py-4 text-sm leading-6 sm:gap-8">
           <dt class="w-1/4 flex-none text-zinc-500"><%= item.title %></dt>
-          <dd class="text-zinc-700"><%= render_slot(item) %></dd>
+          <dd class="text-zinc-700 dark:text-zinc-50"><%= render_slot(item) %></dd>
         </div>
       </dl>
     </div>
@@ -620,6 +645,32 @@ defmodule FireSaleWeb.CoreComponents do
   def icon(%{name: "hero-" <> _} = assigns) do
     ~H"""
     <span class={[@name, @class]} />
+    """
+  end
+
+  @doc """
+  Renders a badge.
+  """
+  attr :value, :string, required: true
+
+  def badge(%{value: value} = assigns) do
+    classes = [
+      "bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300",
+      "bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300",
+      "bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300",
+      "bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300",
+      "bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300",
+      "bg-indigo-100 text-indigo-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-indigo-900 dark:text-indigo-300",
+      "bg-purple-100 text-purple-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300",
+      "bg-pink-100 text-pink-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300"
+    ]
+
+    style_index = Kernel.rem(String.length(value), length(classes))
+    class = Enum.at(classes, style_index)
+    assigns = assign(assigns, :class, class)
+
+    ~H"""
+    <span class={@class}><%= @value %></span>
     """
   end
 

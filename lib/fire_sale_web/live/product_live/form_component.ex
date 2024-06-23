@@ -2,6 +2,7 @@ defmodule FireSaleWeb.ProductLive.FormComponent do
   use FireSaleWeb, :live_component
 
   alias FireSale.Products
+  require Logger
 
   @impl true
   def render(assigns) do
@@ -19,16 +20,10 @@ defmodule FireSaleWeb.ProductLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
-        <.input field={@form[:name]} type="text" label="Name" />
+        <.input field={@form[:name]} type="text" label="Name" data-1p-ignore />
         <.input field={@form[:description]} type="text" label="Description" />
         <.input field={@form[:price]} type="number" label="Price" step="any" />
-        <.input
-          field={@form[:tags]}
-          type="select"
-          multiple
-          label="Tags"
-          options={[{"Option 1", "option1"}, {"Option 2", "option2"}]}
-        />
+        <.input field={@form[:tags]} type="tag" label="Tags" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Product</.button>
         </:actions>

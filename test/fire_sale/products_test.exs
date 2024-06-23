@@ -27,7 +27,7 @@ defmodule FireSale.ProductsTest do
         name: "some name",
         description: "some description",
         price: "120.5",
-        tags: ["option1", "option2"],
+        tags: "option1,option2",
         user_id: user_fixture().id
       }
 
@@ -49,7 +49,7 @@ defmodule FireSale.ProductsTest do
         name: "some updated name",
         description: "some updated description",
         price: "456.7",
-        tags: ["option1"]
+        tags: "option1"
       }
 
       assert {:ok, %Product{} = product} = Products.update_product(product, update_attrs)
