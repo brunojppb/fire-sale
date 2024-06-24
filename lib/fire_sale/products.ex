@@ -18,7 +18,7 @@ defmodule FireSale.Products do
 
   """
   def list_products do
-    query = from p in Product, preload: :user
+    query = from p in Product, order_by: fragment("? DESC", p.inserted_at), preload: :user
     Repo.all(query)
   end
 

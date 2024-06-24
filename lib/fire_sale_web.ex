@@ -55,6 +55,14 @@ defmodule FireSaleWeb do
         layout: {FireSaleWeb.Layouts, :app}
 
       unquote(html_helpers())
+
+      def ok(socket) do
+        {:ok, socket}
+      end
+
+      def noreply(socket) do
+        {:noreply, socket}
+      end
     end
   end
 

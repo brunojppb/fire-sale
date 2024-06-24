@@ -20,7 +20,9 @@ defmodule FireSaleWeb.Router do
   scope "/", FireSaleWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live_session :default do
+      live "/", HomeLive, :index
+    end
   end
 
   # Other scopes may use custom stacks.
