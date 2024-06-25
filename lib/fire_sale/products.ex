@@ -47,6 +47,13 @@ defmodule FireSale.Products do
   def get_product!(id), do: Repo.get!(Product, id)
 
   @doc """
+  Gets a single product.
+
+  Returns `nil` if the Product does not exist.
+  """
+  def get_product(id), do: Repo.get(Product, id)
+
+  @doc """
   Creates a product.
 
   ## Examples
