@@ -37,9 +37,9 @@ defmodule FireSaleWeb.HomeLive do
         </p>
         <p>
           Buying our stuff is super easy:
-          <ul class="max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400">
+          <ul class="space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400">
             <li>Check the products down below</li>
-            <li>If you like it, hit "reserve product"</li>
+            <li>If you like it, hit <strong>reserve product</strong></li>
             <li>Enter your email and phone number</li>
             <li>
               You won't have to pay anything in here, but we will figure out the details between us via email or phone
