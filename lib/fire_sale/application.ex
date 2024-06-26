@@ -14,6 +14,7 @@ defmodule FireSale.Application do
       {Phoenix.PubSub, name: FireSale.PubSub},
       # Start the Finch HTTP client for sending emails
       {Finch, name: FireSale.Finch},
+      FireSaleWeb.Presence,
       # Start a worker by calling: FireSale.Worker.start_link(arg)
       # {FireSale.Worker, arg},
       # Start to serve requests, typically the last entry

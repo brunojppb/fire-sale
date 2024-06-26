@@ -1,8 +1,11 @@
 defmodule FireSaleWeb.ProductLive.Index do
+  alias FireSaleWeb.Endpoint
   use FireSaleWeb, :live_view
 
   alias FireSale.Products
   alias FireSale.Products.Product
+
+  @products_topic "products"
 
   @impl true
   def mount(_params, _session, socket) do
@@ -35,6 +38,7 @@ defmodule FireSaleWeb.ProductLive.Index do
   @impl true
   def handle_info({FireSaleWeb.ProductLive.FormComponent, {:saved, product}}, socket) do
     product = Products.product_with_user(product.id)
+    Endpoint.broadcast(@products_topic, "product_saved", %{})
     {:noreply, stream_insert(socket, :products, product)}
   end
 

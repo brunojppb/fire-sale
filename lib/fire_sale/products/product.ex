@@ -22,6 +22,6 @@ defmodule FireSale.Products.Product do
     product
     |> cast(attrs, [:name, :description, :price, :user_id, :tags])
     |> validate_required([:name, :description, :price, :tags, :user_id])
-    |> unique_constraint(:user_id)
+    |> unique_constraint(:name)
   end
 end
