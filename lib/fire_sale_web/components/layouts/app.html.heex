@@ -7,7 +7,11 @@
     </div>
     <div class="flex items-center gap-4 font-semibold leading-6 text-zinc-900">
       <%!-- TODO: Add about page? --%>
-      <.theme_toggle />
+      <%= live_render(@socket, FireSaleWeb.ThemeToggleLive,
+        id: "theme_toggle",
+        session: %{},
+        sticky: true
+      ) %>
     </div>
   </div>
 </header>
