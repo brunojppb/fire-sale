@@ -56,10 +56,32 @@ defmodule FireSaleWeb do
 
       unquote(html_helpers())
 
+      @doc """
+      Handy helper to pipe `:ok` responses into sockets
+      Example:
+      ```elixir
+      def mount(_params, _session, socket) do
+        socket
+        |> assign(:name, "hello")
+        |> ok()
+      end
+      ```
+      """
       def ok(socket) do
         {:ok, socket}
       end
 
+      @doc """
+      Handy helper to pipe `:noreply` responses into sockets
+      Example:
+      ```elixir
+      def handle_info(state, socket) do
+        socket
+        |> assign(:name, "hello")
+        |> noreply()
+      end
+      ```
+      """
       def noreply(socket) do
         {:noreply, socket}
       end
