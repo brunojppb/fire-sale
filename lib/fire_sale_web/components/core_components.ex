@@ -180,18 +180,6 @@ defmodule FireSaleWeb.CoreComponents do
     """
   end
 
-  def theme_toggle(assigns) do
-    ~H"""
-    <.input
-      type="select"
-      options={[Dark: "dark", Light: "light"]}
-      prompt="Theme"
-      name="theme"
-      value="dark"
-    />
-    """
-  end
-
   @doc """
   Renders a simple form.
 
