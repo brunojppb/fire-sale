@@ -8,8 +8,50 @@ defmodule FireSaleWeb.HomeLive do
 
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-      <h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-zinc-50">
+    <div class="mx-auto max-w-2xl px-4 py-4 md:py-8 sm:px-6 lg:max-w-7xl lg:px-8">
+      <div class="flex flex-col gap-4">
+        <h1 class="text-2xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-zinc-50">
+          Hi there <span role="img" aria-label="hand waving">👋</span>
+        </h1>
+        <div class="flex gap-2">
+          <img
+            src={~p"/images/bruno.jpeg"}
+            class="h-auto w-12 lg:w-16 rounded-full ring-2 p-1 ring-gray-300 dark:ring-gray-500"
+            alt="Bruno"
+          />
+          <img
+            src={~p"/images/rha.jpeg"}
+            class="h-auto w-12 lg:w-16 rounded-full p-1 ring-2 ring-gray-300 dark:ring-gray-500"
+            alt="Rhaisa"
+          />
+        </div>
+        <p>
+          <strong>Bruno</strong>
+          and <strong>Rhaisa</strong>
+          here.<br /> We've been living in Vienna <span role="img" aria-label="Austrian flag">🇦🇹</span>
+          for the past 8 years, but now we are moving to Spain <span
+            role="img"
+            aria-label="Spanish flag"
+          >🇪🇸</span>,
+          so we built this website to make it easier to sell all of our stuff before we go.
+        </p>
+        <p>
+          Buying our stuff is super easy:
+          <ul class="max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400">
+            <li>Check the products down below</li>
+            <li>If you like it, hit "reserve product"</li>
+            <li>Enter your email and phone number</li>
+            <li>
+              You won't have to pay anything in here, but we will figure out the details between us via email or phone
+            </li>
+            <li>
+              We will schedule for your to come and pick it up.
+            </li>
+          </ul>
+        </p>
+      </div>
+
+      <h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-zinc-50 mt-4">
         Available Items
       </h2>
 
