@@ -7,6 +7,16 @@ defmodule FireSale.Products.Product do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @type t :: %__MODULE__{
+          name: String.t(),
+          description: String.t(),
+          price: number(),
+          user: FireSale.Accounts.User.t() | Ecto.Association.NotLoaded.t(),
+          tags: list(FireSale.Products.Tag.t()) | Ecto.Association.NotLoaded.t(),
+          inserted_at: NaiveDateTime.t(),
+          updated_at: NaiveDateTime.t()
+        }
+
   schema "products" do
     field :name, :string
     field :description, :string

@@ -5,6 +5,14 @@ defmodule FireSale.Products.ProductImage do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @type t :: %__MODULE__{
+          name: String.t(),
+          product_id: integer(),
+          product: FireSale.Products.Product.t() | Ecto.Association.NotLoaded.t(),
+          inserted_at: NaiveDateTime.t(),
+          updated_at: NaiveDateTime.t()
+        }
+
   schema "product_images" do
     field :name, :string
     belongs_to :product, FireSale.Products.Product

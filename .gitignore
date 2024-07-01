@@ -54,3 +54,7 @@ npm-debug.log
 .DS_Store
 .vscode
 .idea
+
+# Temp uploads
+/priv/uploads
+/priv/product_images

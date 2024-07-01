@@ -4,6 +4,9 @@ defmodule FireSale.Products.Tag do
   taking it a simple csv-like input from our frontend.
   For more about Ecto custom types, see the [Ecto.Type behaviour](https://hexdocs.pm/ecto/Ecto.Type.html)
   """
+
+  @type t :: list(String.t())
+
   use Ecto.Type
   def type, do: {:array, :string}
 
