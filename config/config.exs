@@ -31,6 +31,11 @@ config :fire_sale, FireSaleWeb.Endpoint,
 # at the `config/runtime.exs`.
 config :fire_sale, FireSale.Mailer, adapter: Swoosh.Adapters.Local
 
+# by default, use the priv directory for product images
+# overwrite this in other environments if you want to have
+# to use /var/product_images instead
+config :fire_sale, :use_priv_for_images, true
+
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",

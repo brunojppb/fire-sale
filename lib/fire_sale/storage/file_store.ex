@@ -44,6 +44,6 @@ defmodule FireSale.Storage.FileStore do
 
   @spec impl() :: __MODULE__.t()
   defp impl() do
-    Application.get_env(:file_sale, :file_store, FireSale.Storage.LocalFileStore)
+    Application.get_env(:fire_sale, :file_store, FireSale.Storage.LocalFileStore)
   end
 end

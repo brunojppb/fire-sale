@@ -56,8 +56,8 @@ defmodule FireSale.Storage.LocalFileStore do
   end
 
   defp upload_dir() do
-    # During development and tests, we use the current priv folder for storing artifacts.
-    if Application.fetch_env!(:fire_sale, :use_priv_for_artifacts) do
+    # During development and tests, we use the current priv folder for storing images.
+    if Application.fetch_env!(:fire_sale, :use_priv_for_images) do
       Application.app_dir(:file_store, Path.join("priv", "product_images"))
     else
       # In production using Docker, we have a stable path

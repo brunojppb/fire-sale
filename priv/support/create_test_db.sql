@@ -1,1 +1,1 @@
-CREATE DATABASE file_sale_test;
+CREATE DATABASE fire_sale_test;
