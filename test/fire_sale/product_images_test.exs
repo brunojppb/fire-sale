@@ -4,7 +4,7 @@ defmodule FireSale.ProductImagesTest do
   alias FireSale.ProductImages
 
   describe "product_images" do
-    alias FireSale.ProductImage
+    alias FireSale.Products.ProductImage
 
     import FireSale.ProductImagesFixtures
 

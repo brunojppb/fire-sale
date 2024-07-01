@@ -6,7 +6,7 @@ defmodule FireSale.ProductImages do
   import Ecto.Query, warn: false
   alias FireSale.Repo
 
-  alias FireSale.ProductImage
+  alias FireSale.Products.ProductImage
 
   @doc """
   Returns the list of product_images.

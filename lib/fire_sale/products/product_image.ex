@@ -1,4 +1,4 @@
-defmodule FireSale.ProductImage do
+defmodule FireSale.Products.ProductImage do
   @moduledoc """
   Images associated with products
   """
@@ -7,7 +7,7 @@ defmodule FireSale.ProductImage do
 
   schema "product_images" do
     field :name, :string
-    field :product_id, :id
+    belongs_to :product, FireSale.Products.Product
 
     timestamps(type: :utc_datetime)
   end
