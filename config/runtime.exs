@@ -34,7 +34,7 @@ if System.get_env("S3_BUCKET_NAME") &&
     s3: [host: System.get_env("S3_HOST")]
 
   # Make The S3 implementation active
-  config :turbo, :file_store, Turbo.Storage.S3Store
+  config :fire_sale, :file_store, Turbo.Storage.S3Store
 end
 
 if config_env() == :prod do

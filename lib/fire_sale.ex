@@ -8,14 +8,14 @@ defmodule FireSale do
   """
 
   @typedoc """
-  Represents the result of a generic operation that can fail.
+  Represents the result of a generic operation which can fail.
   - Success cases return an `:ok` tuple with the given type `t`.
   - Failure cases return an `:error` tuple with the error reason.
   """
   @type result(t) :: {:ok, t} | {:error, reason :: String.t()}
 
   @typedoc """
-  Represents the result of a generic operation that can fail.
+  Represents the result of a generic operation which can fail.
   - Success cases return an `:ok` tuple with the given type `success_t`.
   - Failure cases return an `:error` tuple with the given type `error_t`
   """
