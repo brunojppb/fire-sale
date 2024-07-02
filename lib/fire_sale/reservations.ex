@@ -8,6 +8,36 @@ defmodule FireSale.Reservations do
 
   alias FireSale.Products.Reservation
 
+  def reserve_product(product_id, attrs \\ %{}) do
+    query = from r in Reservation, where: r.product_id == ^product_id and r.status == "reserved"
+
+    # I don't care if there are many reservations for a product,
+    # but as long as there is at least one in status "reserved",
+    # we should not reserve the product anymore.
+    case Repo.one(query) do
+      nil ->
+        do_reserve_product(product_id, attrs)
+
+      _existing_reservetaion ->
+        {:error, "product already reserved"}
+    end
+  end
+
+  defp do_reserve_product(product_id, attrs) do
+    attrs =
+      attrs
+      |> Map.put(:product_id, product_id)
+      |> Map.put(:status, "pending")
+
+    case create_reservation(attrs) do
+      {:ok, reservation} ->
+        {:ok, reservation}
+
+      {:error, changeset} ->
+        {:error, changeset}
+    end
+  end
+
   @doc """
   Returns the list of reservations.
 

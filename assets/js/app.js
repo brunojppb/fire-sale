@@ -49,7 +49,7 @@ window.liveSocket = liveSocket;
 window.addEventListener("phx:gallery", (e) => {
   const lightbox = new PhotoSwipeLightbox({
     gallery: "#product-gallery",
-    children: "a",
+    children: "a.gallery-item",
     pswpModule: PhotoSwipe,
   });
   lightbox.init();

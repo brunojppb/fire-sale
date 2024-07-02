@@ -25,6 +25,7 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
                   data-pswp-height={"#{Enum.at(@product.product_images, 0).height}"}
                   data-cropped="true"
                   target="_blank"
+                  class="gallery-item"
                 >
                   <img
                     class="h-full w-full object-cover object-center lg:h-full lg:w-full"
@@ -49,6 +50,7 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
                       href={~p"/pi/#{img.name}"}
                       data-pswp-width={img.width}
                       data-pswp-height={img.height}
+                      class="gallery-item"
                       target="_blank"
                     >
                       <img
@@ -63,13 +65,16 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
             </div>
             <div class="flex mb-4">
               <div class="px-2 w-full">
-                <.button disabled={@product.reserved}>
+                <.link patch={~p"/p/#{@product}/r"} class="text-zinc-700 dark:text-zinc-300">
+                  Reserve product
+                </.link>
+                <%!-- <.button disabled={@product.reserved}>
                   <%= if @product.reserved do %>
                     Not available.
                   <% else %>
                     Reserve product
                   <% end %>
-                </.button>
+                </.button> --%>
               </div>
             </div>
           </div>
@@ -103,6 +108,21 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
         </div>
       </div>
     </div>
+
+    <.modal
+      :if={@live_action in [:reserve]}
+      id="reserve-product-modal"
+      show
+      on_cancel={JS.patch(~p"/p/#{@product}")}
+    >
+      <.live_component
+        module={FireSaleWeb.ProductLive.ReservationComponent}
+        id={@product.id}
+        action={@live_action}
+        product={@product}
+        patch={~p"/p/#{@product}"}
+      />
+    </.modal>
     """
   end
 

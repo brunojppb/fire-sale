@@ -25,6 +25,7 @@ defmodule FireSaleWeb.Router do
     live_session :default, on_mount: [{FireSaleWeb.UserAuth, :mount_current_user}] do
       live "/", HomeLive, :index
       live "/p/:id", ProductLive.ProductListing, :index
+      live "/p/:id/r", ProductLive.ProductListing, :reserve
     end
   end
 
