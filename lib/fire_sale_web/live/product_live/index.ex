@@ -23,6 +23,12 @@ defmodule FireSaleWeb.ProductLive.Index do
     |> assign(:product, Products.get_product!(id))
   end
 
+  defp apply_action(socket, :add_image, %{"id" => id}) do
+    socket
+    |> assign(:page_title, "Add images")
+    |> assign(:product, Products.get_product!(id))
+  end
+
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Product")

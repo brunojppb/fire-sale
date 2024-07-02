@@ -32,6 +32,9 @@
     <.link patch={~p"/products/#{product}/edit"} class="text-zinc-700 dark:text-zinc-300">
       Edit
     </.link>
+    <.link patch={~p"/products/#{product}/images"} class="text-zinc-700 dark:text-zinc-300">
+      Add images
+    </.link>
   </:action>
   <:action :let={{id, product}}>
     <.link
@@ -57,6 +60,21 @@
     action={@live_action}
     product={@product}
     current_user={@current_user}
+    patch={~p"/products"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:add_image]}
+  id="product-image-modal"
+  show
+  on_cancel={JS.patch(~p"/products")}
+>
+  <.live_component
+    module={FireSaleWeb.ProductLive.ImageFormComponent}
+    id={@product.id || :new}
+    action={@live_action}
+    product={@product}
     patch={~p"/products"}
   />
 </.modal>

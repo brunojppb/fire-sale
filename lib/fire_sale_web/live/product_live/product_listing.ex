@@ -11,11 +11,19 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
         <div class="flex flex-col lg:flex-row -mx-4">
           <div class="md:flex-1 px-4">
             <div class="h-[460px] rounded-lg bg-gray-300 dark:bg-gray-700 mb-4">
-              <img
-                class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-                alt={@product.name}
-              />
+              <%= if length(@product.product_images) > 0 do %>
+                <img
+                  class="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                  src={~p"/pi/#{Enum.at(@product.product_images, 0).name}"}
+                  alt={@product.name}
+                />
+              <% else %>
+                <img
+                  src={~p"/images/no_img.jpg"}
+                  alt={@product.name}
+                  class="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                />
+              <% end %>
             </div>
             <div class="flex -mx-2 mb-4">
               <div class="px-2 w-full">
@@ -60,7 +68,7 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
 
   @impl true
   def handle_params(%{"id" => id}, _, socket) do
-    case Products.get_product(id) do
+    case Products.get_product_with_images(id) do
       nil ->
         socket
         |> put_flash(:error, "Product with id #{id} not found")
