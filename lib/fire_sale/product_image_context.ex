@@ -19,8 +19,8 @@ defmodule FireSale.ProductImageContext do
     |> upload_to_storage()
     |> store(product_id)
     |> case do
-      [{:ok, full}, {:ok, thumb}] ->
-        {:ok, {full, thumb}}
+      {:ok, product_image} ->
+        {:ok, product_image}
 
       _ ->
         {:error, "Could not upload image"}
@@ -52,14 +52,13 @@ defmodule FireSale.ProductImageContext do
   end
 
   defp store({[{:ok, _}, {:ok, _}], %ResizedImage{} = image}, product_id) do
-    [image.resized_filename, image.thumb_filename]
-    |> Enum.map(fn filename ->
-      changeset =
-        ProductImage.changeset(%ProductImage{}, %{name: filename, product_id: product_id})
-
-      Repo.insert(changeset)
-    end)
+    ProductImage.changeset(%ProductImage{}, %{
+      name: image.resized_filename,
+      product_id: product_id
+    })
+    |> Repo.insert()
   end
 
-  defp store({_upload_result, _image}, _user_id), do: {:error, "Could not upload images to S3"}
+  defp store({_upload_result, _image}, _product_id),
+    do: {:error, "Could not upload images to Storage"}
 end

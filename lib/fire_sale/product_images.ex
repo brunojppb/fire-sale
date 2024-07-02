@@ -21,6 +21,11 @@ defmodule FireSale.ProductImages do
     Repo.all(ProductImage)
   end
 
+  def get_product_images(product_id) do
+    query = from pi in ProductImage, where: pi.product_id == ^product_id
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single product_image.
 

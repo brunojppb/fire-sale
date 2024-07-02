@@ -27,4 +27,8 @@ defmodule FireSale.Products.ProductImage do
     |> validate_required([:name, :product_id])
     |> unique_constraint(:name)
   end
+
+  def thumb(%__MODULE__{} = product_image) do
+    "thumb_#{product_image.name}"
+  end
 end

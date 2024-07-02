@@ -20,6 +20,8 @@ defmodule FireSaleWeb.Router do
   scope "/", FireSaleWeb do
     pipe_through :browser
 
+    get "/pi/:filename", ProductImageController, :show
+
     live_session :default, on_mount: [{FireSaleWeb.UserAuth, :mount_current_user}] do
       live "/", HomeLive, :index
       live "/p/:id", ProductLive.ProductListing, :index

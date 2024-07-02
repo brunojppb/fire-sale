@@ -58,7 +58,7 @@ defmodule FireSale.Storage.LocalFileStore do
   defp upload_dir() do
     # During development and tests, we use the current priv folder for storing images.
     if Application.fetch_env!(:fire_sale, :use_priv_for_images) do
-      Application.app_dir(:file_store, Path.join("priv", "product_images"))
+      Application.app_dir(:fire_sale, Path.join("priv", "product_images"))
     else
       # In production using Docker, we have a stable path
       # that doesn't depend on the compiled release path
