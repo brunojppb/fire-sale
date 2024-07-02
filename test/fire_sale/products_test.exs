@@ -2,13 +2,12 @@ defmodule FireSale.ProductsTest do
   use FireSale.DataCase
 
   alias FireSale.Products
+  alias FireSale.Products.Product
+
   import FireSale.AccountsFixtures
+  import FireSale.ProductsFixtures
 
   describe "products" do
-    alias FireSale.Products.Product
-
-    import FireSale.ProductsFixtures
-
     @invalid_attrs %{name: nil, description: nil, price: nil, tags: nil}
 
     test "list_products/0 returns all products" do

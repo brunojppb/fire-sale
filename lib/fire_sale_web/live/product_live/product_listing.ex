@@ -63,9 +63,13 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
             </div>
             <div class="flex mb-4">
               <div class="px-2 w-full">
-                <button class="w-full bg-white text-zinc-700 border-2 dark:-border-2 py-2 px-4 rounded-full font-bold hover:bg-zinc-200 dark:hover:bg-zinc-600 dark:hover:text-white">
-                  Reserve product
-                </button>
+                <.button disabled={@product.reserved}>
+                  <%= if @product.reserved do %>
+                    Not available.
+                  <% else %>
+                    Reserve product
+                  <% end %>
+                </.button>
               </div>
             </div>
           </div>
@@ -73,14 +77,19 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
             <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">
               <%= @product.name %>
             </h2>
-            <div class="flex mb-4">
+            <div class="flex mb-4 flex-col gap-4 lg:gap-8">
               <div class="mr-4">
-                <span class="font-bold text-gray-700 dark:text-gray-300">Price:</span>
-                <span class="text-gray-600 dark:text-gray-300">€ <%= @product.price %></span>
+                <span class="text-3xl font-bold text-gray-900 dark:text-white">
+                  € <%= @product.price %>
+                </span>
               </div>
               <div>
                 <span class="font-bold text-gray-700 dark:text-gray-300">Availability:</span>
-                <span class="text-gray-600 dark:text-gray-300">Available to pick-up</span>
+                <%= if @product.reserved do %>
+                  <span class="text-red-600">Reserved</span>
+                <% else %>
+                  <span class="text-gray-600 dark:text-gray-300">Available to pick-up</span>
+                <% end %>
               </div>
             </div>
 
@@ -122,7 +131,7 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
   end
 
   defp assign_product_or_redirect(socket, product_id) do
-    case Products.get_product_with_images(product_id) do
+    case Products.get_published_product(product_id) do
       nil ->
         socket
         |> put_flash(:error, "Product with id '#{product_id}' not found")

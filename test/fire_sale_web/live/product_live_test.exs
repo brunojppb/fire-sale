@@ -9,12 +9,14 @@ defmodule FireSaleWeb.ProductLiveTest do
     name: "some name",
     description: "some description",
     price: "120.5",
+    published: false,
     tags: "option1,option2"
   }
   @update_attrs %{
     name: "some updated name",
     description: "some updated description",
     price: "456.7",
+    published: false,
     tags: "option1"
   }
   @invalid_attrs %{name: nil, description: nil, price: nil, tags: nil}

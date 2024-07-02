@@ -24,6 +24,8 @@ defmodule FireSaleWeb.ProductLive.FormComponent do
         <.input field={@form[:description]} type="text" label="Description" />
         <.input field={@form[:price]} type="number" label="Price" step="any" />
         <.input field={@form[:tags]} type="tag" label="Tags" />
+        <.input field={@form[:published]} type="checkbox" label="Publish product?" />
+        <.input field={@form[:reserved]} type="checkbox" label="Reserved to someone?" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Product</.button>
         </:actions>

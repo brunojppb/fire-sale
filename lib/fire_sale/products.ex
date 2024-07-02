@@ -29,6 +29,16 @@ defmodule FireSale.Products do
     Repo.all(query)
   end
 
+  def list_published_products do
+    query =
+      from p in Product,
+        where: p.published,
+        order_by: fragment("? DESC", p.inserted_at),
+        preload: [:product_images]
+
+    Repo.all(query)
+  end
+
   @doc """
     Get the given product and preload its associated user
   """
@@ -69,6 +79,16 @@ defmodule FireSale.Products do
     query =
       from p in Product,
         where: p.id == ^id,
+        order_by: fragment("? DESC", p.inserted_at),
+        preload: [:product_images]
+
+    Repo.one(query)
+  end
+
+  def get_published_product(id) do
+    query =
+      from p in Product,
+        where: p.id == ^id and p.published,
         order_by: fragment("? DESC", p.inserted_at),
         preload: [:product_images]
 

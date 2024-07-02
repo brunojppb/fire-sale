@@ -110,7 +110,7 @@ defmodule FireSaleWeb.HomeLive do
   end
 
   defp assign_products(socket) do
-    products = Products.list_products_with_images()
+    products = Products.list_published_products()
 
     socket
     |> assign(products: products)

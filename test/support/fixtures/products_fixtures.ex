@@ -23,6 +23,8 @@ defmodule FireSale.ProductsFixtures do
         description: "some description",
         name: "Product #{System.unique_integer()}",
         price: "120.5",
+        published: false,
+        reserved: false,
         tags: "option1,option2"
       })
       |> FireSale.Products.create_product()
