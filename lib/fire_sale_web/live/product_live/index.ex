@@ -43,9 +43,22 @@ defmodule FireSaleWeb.ProductLive.Index do
 
   @impl true
   def handle_info({FireSaleWeb.ProductLive.FormComponent, {:saved, product}}, socket) do
+    socket
+    |> stream_product_update(product)
+    |> noreply()
+  end
+
+  @impl true
+  def handle_info({FireSaleWeb.ProductLive.ImageFormComponent, {:saved, product}}, socket) do
+    socket
+    |> stream_product_update(product)
+    |> noreply()
+  end
+
+  defp stream_product_update(socket, product) do
     product = Products.product_with_user(product.id)
     Endpoint.broadcast(@products_topic, "product_saved", %{})
-    {:noreply, stream_insert(socket, :products, product)}
+    stream_insert(socket, :products, product)
   end
 
   @impl true

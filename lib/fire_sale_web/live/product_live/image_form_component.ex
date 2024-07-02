@@ -101,6 +101,9 @@ defmodule FireSaleWeb.ProductLive.ImageFormComponent do
         {:ok, ~p"/pi/#{product_image.id}"}
       end)
 
+    # Notify active clients about the new image uploads
+    notify_parent({:saved, socket.assigns.product})
+
     socket =
       socket
       |> assign_product_images(socket.assigns.product)
@@ -119,4 +122,6 @@ defmodule FireSaleWeb.ProductLive.ImageFormComponent do
   defp error_to_string(:too_large), do: "Too large"
   defp error_to_string(:not_accepted), do: "You have selected an unacceptable file type"
   defp error_to_string(:too_many_files), do: "You have selected too many files"
+
+  defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
 end

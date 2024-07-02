@@ -4,6 +4,8 @@ defmodule FireSale.Repo.Migrations.CreateProductImages do
   def change do
     create table(:product_images) do
       add :name, :string, null: false
+      add :width, :integer, null: false
+      add :height, :integer, null: false
       add :product_id, references(:products, on_delete: :nothing), null: false
 
       timestamps(type: :utc_datetime)

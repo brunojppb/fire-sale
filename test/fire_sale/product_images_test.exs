@@ -23,6 +23,8 @@ defmodule FireSale.ProductImagesTest do
     test "create_product_image/1 with valid data creates a product_image" do
       valid_attrs = %{
         name: "some name",
+        width: 10,
+        height: 10,
         product_id: FireSale.ProductsFixtures.product_fixture().id
       }
 

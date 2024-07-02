@@ -235,8 +235,11 @@ defmodule FireSaleWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75",
-        "text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700",
+        "phx-submit-loading:opacity-75 text-white",
+        (Map.get(@rest, :disabled) == nil || Map.get(@rest, :disabled) == false) &&
+          "bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2",
+        Map.get(@rest, :disabled) != nil && @rest.disabled &&
+          "bg-gray-300 px-4 py-2 rounded-md cursor-not-allowed opacity-50",
         @class
       ]}
       {@rest}
@@ -341,16 +344,16 @@ defmodule FireSaleWeb.CoreComponents do
     <div>
       <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
         <input type="hidden" name={@name} value="false" disabled={@rest[:disabled]} />
+        <%= @label %>
         <input
           type="checkbox"
           id={@id}
           name={@name}
           value="true"
           checked={@checked}
-          class="flex w-full h-10 px-3 py-2 text-sm border rounded-md border-input bg-white dark:bg-zinc-700 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+          class="flex w-5 h-6 px-3 py-2 text-sm border rounded-md border-input bg-white dark:bg-zinc-700 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           {@rest}
         />
-        <%= @label %>
       </label>
       <.error :for={msg <- @errors}><%= msg %></.error>
     </div>

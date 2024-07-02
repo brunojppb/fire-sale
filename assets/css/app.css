@@ -1,6 +1,7 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import "../vendor/photoswipe/photoswipe.css";
 
 @layer base {
     :root {

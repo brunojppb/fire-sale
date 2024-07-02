@@ -15,6 +15,12 @@
   <:col :let={{_id, product}} label="Name"><%= product.name %></:col>
   <:col :let={{_id, product}} label="Description"><%= product.description %></:col>
   <:col :let={{_id, product}} label="Price"><%= product.price %></:col>
+  <:col :let={{_id, product}} label="Published?">
+    <%= if product.published, do: "Yes", else: "No" %>
+  </:col>
+  <:col :let={{_id, product}} label="Reserved?">
+    <%= if product.published, do: "Yes", else: "No" %>
+  </:col>
   <:col :let={{_id, product}} label="Tags">
     <div>
       <%= for tag <- product.tags do %>
@@ -22,7 +28,6 @@
       <% end %>
     </div>
   </:col>
-  <:col :let={{_id, product}} label="Creted by"><%= product.user.email %></:col>
   <:action :let={{_id, product}}>
     <div class="sr-only">
       <.link navigate={~p"/products/#{product}"} class="text-zinc-700 dark:text-zinc-300">
