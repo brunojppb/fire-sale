@@ -59,11 +59,19 @@ defmodule FireSaleWeb.HomeLive do
         <%= for product <- @products do %>
           <div class="group relative">
             <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-              <img
-                src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg"
-                alt={product.name}
-                class="h-full w-full object-cover object-center lg:h-full lg:w-full"
-              />
+              <%= if length(product.product_images) > 0 do %>
+                <img
+                  src={~p"/pi/#{Enum.at(product.product_images, 0).name}"}
+                  alt={product.name}
+                  class="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                />
+              <% else %>
+                <img
+                  src={~p"/images/no_img.jpg"}
+                  alt={product.name}
+                  class="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                />
+              <% end %>
             </div>
             <div class="mt-4 flex flex-col justify-between">
               <div>
@@ -105,7 +113,7 @@ defmodule FireSaleWeb.HomeLive do
   end
 
   defp assign_products(socket) do
-    products = Products.list_products()
+    products = Products.list_products_with_images()
 
     socket
     |> assign(products: products)

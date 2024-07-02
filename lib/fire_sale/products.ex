@@ -18,7 +18,14 @@ defmodule FireSale.Products do
 
   """
   def list_products do
-    query = from p in Product, order_by: fragment("? DESC", p.inserted_at), preload: :user
+    query = from p in Product, order_by: fragment("? DESC", p.inserted_at), preload: [:user]
+    Repo.all(query)
+  end
+
+  def list_products_with_images do
+    query =
+      from p in Product, order_by: fragment("? DESC", p.inserted_at), preload: [:product_images]
+
     Repo.all(query)
   end
 
@@ -52,6 +59,11 @@ defmodule FireSale.Products do
   Returns `nil` if the Product does not exist.
   """
   def get_product(id), do: Repo.get(Product, id)
+
+  def get_product_with_images(id) do
+    query = from p in Product, where: p.id == ^id, preload: [:product_images]
+    Repo.one(query)
+  end
 
   @doc """
   Creates a product.
