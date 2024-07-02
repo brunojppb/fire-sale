@@ -81,7 +81,7 @@ defmodule FireSale.ImageResizer do
   end
 
   defp resized_image(image_path, path_to_save) do
-    resize_image(image_path, path_to_save, "1200x1200")
+    resize_image(image_path, path_to_save, "800x800")
   end
 
   defp thumb_image(image_path, path_to_save) do

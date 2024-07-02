@@ -58,7 +58,7 @@ defmodule FireSaleWeb.HomeLive do
       <div class="mt-6 grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
         <%= for product <- @products do %>
           <div class="group relative">
-            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 h-60">
               <%= if length(product.product_images) > 0 do %>
                 <img
                   src={~p"/pi/#{Enum.at(product.product_images, 0).name}"}
@@ -83,9 +83,6 @@ defmodule FireSaleWeb.HomeLive do
                 </h3>
                 <p class="text-sm font-medium text-gray-900 dark:text-zinc-50 font-bold">
                   € <%= product.price %>
-                </p>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                  <%= product.description %>
                 </p>
               </div>
             </div>

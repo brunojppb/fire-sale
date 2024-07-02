@@ -1,7 +1,10 @@
 defmodule FireSaleWeb.ProductLive.ProductListing do
   use FireSaleWeb, :live_view
+  alias FireSaleWeb.Endpoint
 
   alias FireSale.Products
+
+  @products_topic "products"
 
   @impl true
   def render(assigns) do
@@ -63,23 +66,38 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
 
   @impl true
   def mount(_params, _session, socket) do
+    if connected?(socket) do
+      Endpoint.subscribe(@products_topic)
+    end
+
     {:ok, socket}
   end
 
   @impl true
-  def handle_params(%{"id" => id}, _, socket) do
-    case Products.get_product_with_images(id) do
+  def handle_params(%{"id" => product_id}, _, socket) do
+    socket
+    |> assign_product_or_redirect(product_id)
+    |> noreply()
+  end
+
+  @impl true
+  def handle_info(%{event: "product_saved"}, socket) do
+    socket
+    |> assign_product_or_redirect(socket.assigns.product.id)
+    |> noreply()
+  end
+
+  defp assign_product_or_redirect(socket, product_id) do
+    case Products.get_product_with_images(product_id) do
       nil ->
         socket
-        |> put_flash(:error, "Product with id #{id} not found")
+        |> put_flash(:error, "Product with id '#{product_id}' not found")
         |> redirect(to: ~p"/")
-        |> noreply()
 
       product ->
         socket
         |> assign(:page_title, product.name)
         |> assign(:product, product)
-        |> noreply()
     end
   end
 end

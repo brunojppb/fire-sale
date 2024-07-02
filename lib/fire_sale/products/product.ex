@@ -23,7 +23,7 @@ defmodule FireSale.Products.Product do
     field :price, :decimal
     field :tags, Tag
     belongs_to :user, User
-    has_many :product_images, FireSale.Products.ProductImage
+    has_many :product_images, FireSale.Products.ProductImage, preload_order: [desc: :inserted_at]
 
     timestamps(type: :utc_datetime)
   end
