@@ -52,7 +52,7 @@ defmodule FireSaleWeb.HomeLive do
       </div>
 
       <h2 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-zinc-50 mt-4">
-        Available Items
+        Garage Sale ‧ Items
       </h2>
 
       <div class="mt-6 grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
@@ -78,10 +78,23 @@ defmodule FireSaleWeb.HomeLive do
                 <h3 class="text-sm text-gray-700">
                   <.link href={~p"/p/#{product.id}"} class="dark:text-zinc-50">
                     <span aria-hidden="true" class="absolute inset-0"></span>
-                    <span class="dark:text-zinc-50"><%= product.name %></span>
+                    <span class={[
+                      "dark:text-zinc-50",
+                      product.reserved && "line-through"
+                    ]}>
+                      <%= product.name %>
+                    </span>
+                    <%= if product.reserved do %>
+                      <span class="dark:text-zinc-50 text-xs" ,>
+                        (Reserved)
+                      </span>
+                    <% end %>
                   </.link>
                 </h3>
-                <p class="text-sm font-medium text-gray-900 dark:text-zinc-50 font-bold">
+                <p class={[
+                  "text-sm font-medium text-gray-900 dark:text-zinc-50 font-bold",
+                  product.reserved && "line-through"
+                ]}>
                   € <%= product.price %>
                 </p>
               </div>
