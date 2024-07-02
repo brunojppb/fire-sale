@@ -21,6 +21,8 @@ import "phoenix_html";
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
+import PhotoSwipeLightbox from "../vendor/photoswipe/photoswipe-lightbox.esm.js";
+import PhotoSwipe from "../vendor/photoswipe/photoswipe.esm.js";
 
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
@@ -43,6 +45,16 @@ liveSocket.connect();
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket;
+
+window.addEventListener("phx:gallery", (e) => {
+  console.log("NEW GALLERY!");
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: "#product-gallery",
+    children: "a",
+    pswpModule: PhotoSwipe,
+  });
+  lightbox.init();
+});
 
 // Custom hooks
 window.addEventListener("fire_sale:toggle_theme", (event) => {

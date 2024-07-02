@@ -2,13 +2,32 @@ defmodule FireSale.ImageResizer.ResizedImage do
   @moduledoc """
     data bag for resized image during uploads
   """
-  @enforce_keys [:original, :resized_path, :thumb_path, :resized_filename, :thumb_filename]
-  defstruct [:original, :resized_path, :thumb_path, :resized_filename, :thumb_filename]
+  @enforce_keys [
+    :original,
+    :resized_path,
+    :thumb_path,
+    :width,
+    :height,
+    :resized_filename,
+    :thumb_filename
+  ]
+
+  defstruct [
+    :original,
+    :resized_path,
+    :thumb_path,
+    :width,
+    :height,
+    :resized_filename,
+    :thumb_filename
+  ]
 
   @type t :: %__MODULE__{
           original: String.t(),
           resized_path: String.t(),
           resized_filename: String.t(),
+          width: integer(),
+          height: integer(),
           thumb_path: String.t(),
           thumb_filename: String.t()
         }
@@ -42,17 +61,23 @@ defmodule FireSale.ImageResizer do
 
     full_img_task =
       Task.async(fn ->
-        %Mogrify.Image{path: path} = resized_image(image_file, temp_full_img_path)
-        {:ok, path}
+        {%Mogrify.Image{path: path}, %{width: width, height: height}} =
+          resized_image(image_file, temp_full_img_path)
+
+        dbg(width)
+
+        {:ok, path, width, height}
       end)
 
     thumb_img_task =
       Task.async(fn ->
-        %Mogrify.Image{path: path} = thumb_image(image_file, temp_thumb_img_path)
-        {:ok, path}
+        {%Mogrify.Image{path: path}, %{width: width, height: height}} =
+          thumb_image(image_file, temp_thumb_img_path)
+
+        {:ok, path, width, height}
       end)
 
-    [{:ok, resized_img}, {:ok, thumb_img}] =
+    [{:ok, resized_img, width, height}, {:ok, thumb_img, _thumb_width, _thumb_height}] =
       Task.await_many([
         full_img_task,
         thumb_img_task
@@ -62,6 +87,8 @@ defmodule FireSale.ImageResizer do
       original: image_file,
       resized_path: resized_img,
       resized_filename: full_filename,
+      width: width,
+      height: height,
       thumb_path: thumb_img,
       thumb_filename: thumb_filename
     }
@@ -89,10 +116,15 @@ defmodule FireSale.ImageResizer do
   end
 
   defp resize_image(image_path, path_to_save, resize_limit) do
-    Mogrify.open(image_path)
-    |> Mogrify.format("jpg")
-    |> Mogrify.resize_to_limit(resize_limit)
-    |> Mogrify.save(path: path_to_save)
+    image =
+      Mogrify.open(image_path)
+      |> Mogrify.format("jpg")
+      |> Mogrify.resize_to_limit(resize_limit)
+      |> Mogrify.save(path: path_to_save)
+
+    info = Mogrify.identify(image.path)
+
+    {image, info}
   end
 
   defp temp_upload_dir(), do: Application.app_dir(:fire_sale, Path.join("priv", "uploads"))

@@ -10,6 +10,7 @@ defmodule FireSale.ProductImageContext do
   alias FireSale.Storage.FileStore
   alias FireSale.Products.ProductImage
   alias FireSale.Repo
+  require Logger
 
   @spec upload(image_path :: String.t(), product_id :: integer()) ::
           FireSale.result({ProductImage.t(), ProductImage.t()})
@@ -22,7 +23,8 @@ defmodule FireSale.ProductImageContext do
       {:ok, product_image} ->
         {:ok, product_image}
 
-      _ ->
+      val ->
+        Logger.info("Error: #{inspect(val)}")
         {:error, "Could not upload image"}
     end
   end
@@ -52,9 +54,13 @@ defmodule FireSale.ProductImageContext do
   end
 
   defp store({[{:ok, _}, {:ok, _}], %ResizedImage{} = image}, product_id) do
+    dbg(image)
+
     ProductImage.changeset(%ProductImage{}, %{
       name: image.resized_filename,
-      product_id: product_id
+      product_id: product_id,
+      width: image.width,
+      height: image.height
     })
     |> Repo.insert()
   end

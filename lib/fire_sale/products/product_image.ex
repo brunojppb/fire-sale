@@ -7,6 +7,8 @@ defmodule FireSale.Products.ProductImage do
 
   @type t :: %__MODULE__{
           name: String.t(),
+          width: integer(),
+          height: integer(),
           product_id: integer(),
           product: FireSale.Products.Product.t() | Ecto.Association.NotLoaded.t(),
           inserted_at: NaiveDateTime.t(),
@@ -15,6 +17,8 @@ defmodule FireSale.Products.ProductImage do
 
   schema "product_images" do
     field :name, :string
+    field :width, :integer
+    field :height, :integer
     belongs_to :product, FireSale.Products.Product
 
     timestamps(type: :utc_datetime)
@@ -23,8 +27,8 @@ defmodule FireSale.Products.ProductImage do
   @doc false
   def changeset(product_image, attrs) do
     product_image
-    |> cast(attrs, [:name, :product_id])
-    |> validate_required([:name, :product_id])
+    |> cast(attrs, [:name, :width, :height, :product_id])
+    |> validate_required([:name, :width, :height, :product_id])
     |> unique_constraint(:name)
   end
 
