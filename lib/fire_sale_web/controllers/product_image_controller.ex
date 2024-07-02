@@ -15,6 +15,8 @@ defmodule FireSaleWeb.ProductImageController do
   defp stream_resp({:ok, stream}, conn) do
     conn
     |> put_resp_content_type("image/jpeg")
+    # Cache for 6 months
+    |> put_resp_header("cache-control", "public, max-age=15778476")
     |> send_chunked(200)
     |> send_chunked_stream(stream)
   end
