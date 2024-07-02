@@ -64,8 +64,6 @@ defmodule FireSale.ImageResizer do
         {%Mogrify.Image{path: path}, %{width: width, height: height}} =
           resized_image(image_file, temp_full_img_path)
 
-        dbg(width)
-
         {:ok, path, width, height}
       end)
 

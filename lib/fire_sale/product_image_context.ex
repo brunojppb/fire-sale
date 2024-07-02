@@ -54,8 +54,6 @@ defmodule FireSale.ProductImageContext do
   end
 
   defp store({[{:ok, _}, {:ok, _}], %ResizedImage{} = image}, product_id) do
-    dbg(image)
-
     ProductImage.changeset(%ProductImage{}, %{
       name: image.resized_filename,
       product_id: product_id,
