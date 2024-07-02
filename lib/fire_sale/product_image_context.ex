@@ -24,7 +24,7 @@ defmodule FireSale.ProductImageContext do
         {:ok, product_image}
 
       val ->
-        Logger.info("Error: #{inspect(val)}")
+        Logger.error("Error: #{inspect(val)}")
         {:error, "Could not upload image"}
     end
   end
