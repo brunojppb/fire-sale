@@ -1,4 +1,5 @@
 defmodule FireSale.ReservationsTest do
+  alias FireSale.ReservationsFixtures
   use FireSale.DataCase
 
   alias FireSale.Reservations
@@ -26,7 +27,7 @@ defmodule FireSale.ReservationsTest do
         status: "some status",
         token: "some token",
         phone: "some phone",
-        email: "some email",
+        email: ReservationsFixtures.unique_email(),
         product_id: FireSale.ProductsFixtures.product_fixture().id
       }
 
@@ -35,7 +36,7 @@ defmodule FireSale.ReservationsTest do
       assert reservation.status == "some status"
       assert reservation.token == "some token"
       assert reservation.phone == "some phone"
-      assert reservation.email == "some email"
+      assert reservation.email == valid_attrs.email
     end
 
     test "create_reservation/1 with invalid data returns error changeset" do
@@ -50,7 +51,7 @@ defmodule FireSale.ReservationsTest do
         status: "some updated status",
         token: "some updated token",
         phone: "some updated phone",
-        email: "some updated email"
+        email: "my_new_email@example.com"
       }
 
       assert {:ok, %Reservation{} = reservation} =
@@ -60,7 +61,7 @@ defmodule FireSale.ReservationsTest do
       assert reservation.status == "some updated status"
       assert reservation.token == "some updated token"
       assert reservation.phone == "some updated phone"
-      assert reservation.email == "some updated email"
+      assert reservation.email == "my_new_email@example.com"
     end
 
     test "update_reservation/2 with invalid data returns error changeset" do

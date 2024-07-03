@@ -26,8 +26,8 @@ defmodule FireSale.Reservations do
   defp do_reserve_product(product_id, attrs) do
     attrs =
       attrs
-      |> Map.put(:product_id, product_id)
-      |> Map.put(:status, "pending")
+      |> Map.put("product_id", product_id)
+      |> Map.put("status", "pending")
 
     case create_reservation(attrs) do
       {:ok, reservation} ->

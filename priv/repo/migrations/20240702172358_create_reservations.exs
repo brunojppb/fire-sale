@@ -16,5 +16,6 @@ defmodule FireSale.Repo.Migrations.CreateReservations do
     create index(:reservations, [:product_id])
     create index(:reservations, [:status])
     create index(:reservations, [:token])
+    create unique_index(:reservations, [:email, :product_id])
   end
 end

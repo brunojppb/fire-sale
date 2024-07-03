@@ -4,6 +4,8 @@ defmodule FireSale.ReservationsFixtures do
   entities via the `FireSale.Reservations` context.
   """
 
+  def unique_email, do: "reservation_#{System.unique_integer([:positive])}@example.com"
+
   @doc """
   Generate a reservation.
   """
@@ -18,7 +20,7 @@ defmodule FireSale.ReservationsFixtures do
     {:ok, reservation} =
       attrs
       |> Enum.into(%{
-        email: "some email",
+        email: unique_email(),
         name: "some name",
         phone: "some phone",
         status: "some status",
