@@ -65,7 +65,9 @@ defmodule FireSaleWeb.ProductLive.ReservationComponent do
 
   @impl true
   def handle_event("save", %{"reservation" => params}, socket) do
-    case Reservations.reserve_product(socket.assigns.product.id, params) do
+    reservation_url_fun = fn token -> url(~p"/r/#{token}") end
+
+    case Reservations.reserve_product(socket.assigns.product.id, params, reservation_url_fun) do
       {:ok, _reservation} ->
         notify_parent(:reservation_created)
         {:noreply, socket}

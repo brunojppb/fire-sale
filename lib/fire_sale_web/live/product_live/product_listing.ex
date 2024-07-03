@@ -76,19 +76,25 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
             </div>
           </div>
           <div class="md:flex-1 px-4">
-            <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">
+            <h2 class={[
+              "text-2xl font-bold text-gray-800 dark:text-white mb-2",
+              @product.reserved && "line-through"
+            ]}>
               <%= @product.name %>
             </h2>
             <div class="flex mb-4 flex-col gap-4 lg:gap-8">
               <div class="mr-4">
-                <span class="text-3xl font-bold text-gray-900 dark:text-white">
+                <span class={[
+                  "text-3xl font-bold text-gray-900 dark:text-white",
+                  @product.reserved && "line-through"
+                ]}>
                   € <%= @product.price %>
                 </span>
               </div>
               <div>
                 <span class="font-bold text-gray-700 dark:text-gray-300">Availability:</span>
                 <%= if @product.reserved do %>
-                  <span class="text-red-600">Reserved</span>
+                  <span class="text-gray-600 dark:text-gray-300">Reserved</span>
                 <% else %>
                   <span class="text-gray-600 dark:text-gray-300">Available to pick-up</span>
                 <% end %>

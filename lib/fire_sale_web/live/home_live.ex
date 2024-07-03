@@ -63,7 +63,10 @@ defmodule FireSaleWeb.HomeLive do
                 <img
                   src={~p"/pi/#{Enum.at(product.product_images, 0).name}"}
                   alt={product.name}
-                  class="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                  class={[
+                    "h-full w-full object-cover object-center lg:h-full lg:w-full",
+                    product.reserved && "not-available"
+                  ]}
                 />
               <% else %>
                 <img

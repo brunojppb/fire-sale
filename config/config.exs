@@ -11,6 +11,11 @@ config :fire_sale,
   ecto_repos: [FireSale.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+config :fire_sale, Oban,
+  engine: Oban.Engines.Basic,
+  queues: [default: 1],
+  repo: FireSale.Repo
+
 # Configures the endpoint
 config :fire_sale, FireSaleWeb.Endpoint,
   url: [host: "localhost"],

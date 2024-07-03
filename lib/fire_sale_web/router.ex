@@ -21,6 +21,7 @@ defmodule FireSaleWeb.Router do
     pipe_through :browser
 
     get "/pi/:filename", ProductImageController, :show
+    get "/r/:token", ReservationConfirmationController, :show
 
     live_session :default, on_mount: [{FireSaleWeb.UserAuth, :mount_current_user}] do
       live "/", HomeLive, :index
