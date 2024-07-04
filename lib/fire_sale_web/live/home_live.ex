@@ -79,7 +79,7 @@ defmodule FireSaleWeb.HomeLive do
             <div class="mt-4 flex flex-col justify-between">
               <div>
                 <h3 class="text-sm text-gray-700">
-                  <.link href={~p"/p/#{product.id}"} class="dark:text-zinc-50">
+                  <.link navigate={~p"/p/#{product.id}"} class="dark:text-zinc-50">
                     <span aria-hidden="true" class="absolute inset-0"></span>
                     <span class={[
                       "dark:text-zinc-50",
