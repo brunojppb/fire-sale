@@ -11,7 +11,7 @@ defmodule FireSaleWeb.UserRegistrationLive do
         Register for an account
         <:subtitle>
           Already registered?
-          <.link navigate={~p"/users/log_in"} class="font-semibold text-brand hover:underline">
+          <.link navigate={~p"/ops/users/log_in"} class="font-semibold text-brand hover:underline">
             Log in
           </.link>
           to your account now.
@@ -24,7 +24,7 @@ defmodule FireSaleWeb.UserRegistrationLive do
         phx-submit="save"
         phx-change="validate"
         phx-trigger-action={@trigger_submit}
-        action={~p"/users/log_in?_action=registered"}
+        action={~p"/ops/users/log_in?_action=registered"}
         method="post"
       >
         <.error :if={@check_errors}>
@@ -59,7 +59,7 @@ defmodule FireSaleWeb.UserRegistrationLive do
         {:ok, _} =
           Accounts.deliver_user_confirmation_instructions(
             user,
-            &url(~p"/users/confirm/#{&1}")
+            &url(~p"/ops/users/confirm/#{&1}")
           )
 
         changeset = Accounts.change_user_registration(user)

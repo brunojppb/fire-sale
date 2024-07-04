@@ -13,23 +13,29 @@
   </head>
   <body class="antialiased dark">
     <%= if @current_user do %>
-      <ul class="relative z-10 flex items-center gap-4 px-4 sm:px-6 lg:px-8 justify-end">
-        <li class="text-[0.8125rem] leading-6 text-zinc-900">
+      <ul class="relative z-10 flex items-center justify-end gap-4 px-4 sm:px-6 lg:px-8">
+        <li class="text-[0.8125rem] leading-6 text-zinc-900 dark:text-white">
           <%= @current_user.email %>
         </li>
+        <.link
+          href={~p"/ops/products"}
+          class="text-[0.8125rem] leading-6 text-zinc-900 dark:text-white font-semibold hover:text-zinc-700"
+        >
+          Products
+        </.link>
         <li>
           <.link
-            href={~p"/users/settings"}
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            href={~p"/ops/users/settings"}
+            class="text-[0.8125rem] leading-6 text-zinc-900 dark:text-white font-semibold hover:text-zinc-700"
           >
             Settings
           </.link>
         </li>
         <li>
           <.link
-            href={~p"/users/log_out"}
+            href={~p"/ops/users/log_out"}
             method="delete"
-            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+            class="text-[0.8125rem] leading-6 text-zinc-900 dark:text-white font-semibold hover:text-zinc-700"
           >
             Log out
           </.link>

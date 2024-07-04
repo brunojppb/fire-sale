@@ -1,7 +1,7 @@
 <.header>
   Product <%= @product.id %>
   <:actions>
-    <.link patch={~p"/products/#{@product}/show/edit"} phx-click={JS.push_focus()}>
+    <.link patch={~p"/ops/products/#{@product}/show/edit"} phx-click={JS.push_focus()}>
       <.button>Edit product</.button>
     </.link>
   </:actions>
@@ -23,13 +23,13 @@
   </:item>
 </.list>
 
-<.back navigate={~p"/products"}>Back to products</.back>
+<.back navigate={~p"/ops/products"}>Back to products</.back>
 
 <.modal
   :if={@live_action == :edit}
   id="product-modal"
   show
-  on_cancel={JS.patch(~p"/products/#{@product}")}
+  on_cancel={JS.patch(~p"/ops/products/#{@product}")}
 >
   <.live_component
     module={FireSaleWeb.ProductLive.FormComponent}
@@ -38,6 +38,6 @@
     action={@live_action}
     product={@product}
     current_user={@current_user}
-    patch={~p"/products/#{@product}"}
+    patch={~p"/ops/products/#{@product}"}
   />
 </.modal>
