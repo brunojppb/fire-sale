@@ -9,7 +9,7 @@ defmodule FireSaleWeb.ProductLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :products, Products.list_products())}
+    {:ok, assign(socket, :products, Products.list_products_with_images())}
   end
 
   @impl true
@@ -42,23 +42,21 @@ defmodule FireSaleWeb.ProductLive.Index do
   end
 
   @impl true
-  def handle_info({FireSaleWeb.ProductLive.FormComponent, {:saved, product}}, socket) do
+  def handle_info({FireSaleWeb.ProductLive.FormComponent, {:saved, _product}}, socket) do
+    Endpoint.broadcast(@products_topic, "product_saved", %{})
+
     socket
-    |> stream_product_update(product)
+    |> assign(:products, Products.list_products_with_images())
     |> noreply()
   end
 
   @impl true
-  def handle_info({FireSaleWeb.ProductLive.ImageFormComponent, {:saved, product}}, socket) do
-    socket
-    |> stream_product_update(product)
-    |> noreply()
-  end
-
-  defp stream_product_update(socket, product) do
-    product = Products.product_with_user(product.id)
+  def handle_info({FireSaleWeb.ProductLive.ImageFormComponent, {:saved, _product}}, socket) do
     Endpoint.broadcast(@products_topic, "product_saved", %{})
-    stream_insert(socket, :products, product)
+
+    socket
+    |> assign(:products, Products.list_products_with_images())
+    |> noreply()
   end
 
   @impl true
@@ -66,6 +64,6 @@ defmodule FireSaleWeb.ProductLive.Index do
     product = Products.get_product!(id)
     {:ok, _} = Products.delete_product(product)
 
-    {:noreply, stream_delete(socket, :products, product)}
+    {:noreply, assign(socket, :products, Products.list_products_with_images())}
   end
 end
