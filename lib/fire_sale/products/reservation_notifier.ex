@@ -27,7 +27,7 @@ defmodule FireSale.Products.ReservationNotifier do
     deliver(email, "Confirm your reservation", """
     Hi #{name},
 
-    Thanks for your interested in our little garage sale.
+    Thanks for your interest in our little garage sale.
     In order to confirm your reservation for the #{product_name}, click on the link below:
 
     #{url}
