@@ -55,6 +55,7 @@ defmodule FireSale.MixProject do
        depth: 1},
       {:oban, "~> 2.17"},
       {:swoosh, "~> 1.5"},
+      {:gen_smtp, "~> 1.2"},
       {:finch, "~> 0.13"},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
