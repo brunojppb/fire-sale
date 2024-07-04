@@ -35,14 +35,14 @@ defmodule FireSale.Products.ReservationNotifier do
     Hi #{name},
 
     Thanks for your interest in our little garage sale.
-    In order to confirm your reservation for the #{product_name}, click on the link below:
+    In order to confirm your reservation for the product "#{product_name}", click on the link below:
 
     #{url}
 
     If you didn't reserve this product, please ignore this.
 
     Best,
-    Bruno Paulino
+    Bruno
     """)
   end
 

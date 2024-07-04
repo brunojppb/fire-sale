@@ -79,7 +79,7 @@ defmodule FireSaleWeb.ProductLive.ReservationComponent do
         {:noreply,
          socket
          |> put_flash(:error, error_message)
-         |> push_patch(to: ~p"/")}
+         |> redirect(to: ~p"/")}
     end
   end
 

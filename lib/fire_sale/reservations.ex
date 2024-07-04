@@ -10,6 +10,8 @@ defmodule FireSale.Reservations do
   alias FireSale.Products.Reservation
 
   def reserve_product(product_id, attrs, reservation_url_fun) do
+    # Ideally, this whole thing should be in a transaction.
+    # All queries and updates, but I'm too lazy today to wrap it all up.
     query = from r in Reservation, where: r.product_id == ^product_id and r.status == "reserved"
 
     # I don't care if there are many reservations for a product,
@@ -17,7 +19,19 @@ defmodule FireSale.Reservations do
     # we should not reserve the product anymore.
     case Repo.one(query) do
       nil ->
-        do_reserve_product(product_id, attrs, reservation_url_fun)
+        # But I do set a max cap of 10 people trying to reserve this product,
+        # Otherwise they can explode my AWS email bill.
+        query =
+          from r in Reservation, where: r.product_id == ^product_id, select: fragment("count(*)")
+
+        count = Repo.one(query)
+        # We cap at at most 4 people trying to reserve the product
+        if count < 4 do
+          do_reserve_product(product_id, attrs, reservation_url_fun)
+        else
+          {:error,
+           "Too many people already tried to reserve this product. Check it back again later."}
+        end
 
       _existing_reservetaion ->
         {:error, "product already reserved"}
