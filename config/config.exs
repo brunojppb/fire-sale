@@ -16,6 +16,8 @@ config :fire_sale, Oban,
   queues: [default: 1],
   repo: FireSale.Repo
 
+config :fire_sale, :email, System.get_env("SYSTEM_EMAIL") || "noreply@bye.bpaulino.com"
+
 # Configures the endpoint
 config :fire_sale, FireSaleWeb.Endpoint,
   url: [host: "localhost"],

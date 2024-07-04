@@ -11,7 +11,7 @@ defmodule FireSale.Products.ReservationNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"Bruno", "noreply@bye.bpaulino.com"})
+      |> from(sender_email())
       |> subject(subject)
       |> text_body(body)
 
@@ -37,5 +37,9 @@ defmodule FireSale.Products.ReservationNotifier do
     Best,
     Bruno Paulino
     """)
+  end
+
+  defp sender_email() do
+    {"bruno", Application.fetch_env!(:fire_sale, :email)}
   end
 end

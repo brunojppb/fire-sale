@@ -14,7 +14,7 @@ defmodule FireSale.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"FireSale", "contact@example.com"})
+      |> from(sender_email())
       |> subject(subject)
       |> text_body(body)
 
@@ -81,5 +81,9 @@ defmodule FireSale.Accounts.UserNotifier do
 
     ==============================
     """)
+  end
+
+  defp sender_email() do
+    {"bruno", Application.fetch_env!(:fire_sale, :email)}
   end
 end
