@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
 
-    <meta name="author" content="Bruno Paulino">
-    <meta name="description" content="Help us move to Spain!">
-    <meta name="theme-color" content="#21364B">
-
+    <meta name="author" content="Bruno Paulino" />
+    <meta name="description" content="Help us move to Spain!" />
+    <meta name="theme-color" content="#21364B" />
     <!-- Open Graph meta properties for beautifully rendering link previews on social -->
     <!-- See: https://ogp.me/ -->
     <meta property="og:type" content="website" />
@@ -16,10 +15,9 @@
     <meta property="og:title" content="Bye Austria" />
     <meta property="og:description" content="Help us move to Spain!" />
     <meta property="og:image" content={url(~p"/images/og.jpg")} />
-
     <!-- twitter card tags additive to og: meta properties -->
     <!-- See: https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/markup -->
-    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:domain" content="bye.bpaulino.com" />
     <meta name="twitter:title" content="bye.bpaulino.com" />
     <meta name="twitter:description" content="Help us move to Spain!" />
@@ -71,4 +69,11 @@
     <% end %>
     <%= @inner_content %>
   </body>
+  <footer class="rounded-sm shadow m-4 bg-zinc-100 dark:bg-zinc-800 mx-auto max-w-2xl px-4 py-4 lg:max-w-7xl">
+    <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
+      <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+        Created with ❤️ by <a href="https://bpaulino.com/" class="underline">Bruno Paulino</a>. All Rights Reserved.
+      </span>
+    </div>
+  </footer>
 </html>
