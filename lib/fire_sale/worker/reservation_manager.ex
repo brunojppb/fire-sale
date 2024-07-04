@@ -52,5 +52,4 @@ defmodule FireSale.Worker.ReservationManager do
   def timeout(_job) do
     5000
   end
-
 end
