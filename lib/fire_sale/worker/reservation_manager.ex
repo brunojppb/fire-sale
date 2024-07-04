@@ -47,4 +47,10 @@ defmodule FireSale.Worker.ReservationManager do
 
     :ok
   end
+
+  @impl Oban.Worker
+  def timeout(_job) do
+    5000
+  end
+
 end
