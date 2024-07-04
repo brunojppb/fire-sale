@@ -129,7 +129,7 @@ if config_env() == :prod do
   #   auth: :always,
   #   tls: :always
 
-  config :fire_sale, FIreSale.Mailer,
+  config :fire_sale, FireSale.Mailer,
     adapter: Swoosh.Adapters.AmazonSES,
     region: "eu-west-1",
     access_key: System.get_env("AWS_SES_ACCESS_KEY"),
