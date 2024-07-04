@@ -45,7 +45,7 @@ defmodule FireSaleWeb.HomeLive do
               You won't have to pay anything in here, but we will figure out the details between us via email or phone
             </li>
             <li>
-              We will schedule for your to come and pick it up.
+              We will schedule a time for you to come by and pick it up.
             </li>
           </ul>
         </p>
