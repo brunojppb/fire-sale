@@ -17,7 +17,8 @@ defmodule FireSale.Products.ReservationNotifier do
       |> text_body(body)
 
     case Mailer.deliver(email) do
-      {:ok, _metadata} ->
+      {:ok, metadata} ->
+        Logger.info("Mail sent to email=#{recipient} meta=#{inspect(metadata)}")
         {:ok, email}
 
       {:error, error} ->

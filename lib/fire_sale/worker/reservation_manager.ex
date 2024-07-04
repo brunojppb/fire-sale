@@ -23,7 +23,7 @@ defmodule FireSale.Worker.ReservationManager do
 
     case result do
       nil ->
-        Logger.debug("Could not find reservation with id #{id}")
+        Logger.info("Could not find reservation with id #{id}")
         :ok
 
       {name, email, product_name} ->
