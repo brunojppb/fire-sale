@@ -4,6 +4,33 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
+
+    <meta name="author" content="Bruno Paulino">
+    <meta name="description" content="Help us move to Spain!">
+    <meta name="theme-color" content="#21364B">
+
+    <!-- Open Graph meta properties for beautifully rendering link previews on social -->
+    <!-- See: https://ogp.me/ -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://bye.bpaulino.com/" />
+    <meta property="og:title" content="Bye Austria" />
+    <meta property="og:description" content="Help us move to Spain!" />
+    <meta property="og:image" content={url(~p"/images/og.jpg")} />
+
+    <!-- twitter card tags additive to og: meta properties -->
+    <!-- See: https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/markup -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:domain" content="bye.bpaulino.com" />
+    <meta name="twitter:title" content="bye.bpaulino.com" />
+    <meta name="twitter:description" content="Help us move to Spain!" />
+    <meta name="twitter:image" content={url(~p"/images/og.jpg")} />
+    <meta name="twitter:url" content="https://bye.bpaulino.com/" />
+    <meta name="twitter:creator" content="@bpaulino0" />
+    <meta name="twitter:label1" content="Created by" />
+    <meta name="twitter:data1" content="Bruno Paulino" />
+    <meta name="twitter:label2" content="Twitter" />
+    <meta name="twitter:data2" content="@bpaulino0" />
+
     <.live_title suffix="">
       <%= assigns[:page_title] || "FireSale" %>
     </.live_title>
