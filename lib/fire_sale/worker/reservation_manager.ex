@@ -27,8 +27,8 @@ defmodule FireSale.Worker.ReservationManager do
         :ok
 
       {name, email, product_name} ->
-        ReservationNotifier.deliver_reservation_instructions(name, email, product_name, url)
         Logger.info("Sending reservation email to #{email}")
+        ReservationNotifier.deliver_reservation_instructions(name, email, product_name, url)
         :ok
     end
   end

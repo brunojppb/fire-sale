@@ -4,6 +4,7 @@ defmodule FireSale.Products.ReservationNotifier do
   """
   import Swoosh.Email
 
+  require Logger
   alias FireSale.Mailer
 
   # Delivers the email using the application mailer.
@@ -15,8 +16,13 @@ defmodule FireSale.Products.ReservationNotifier do
       |> subject(subject)
       |> text_body(body)
 
-    with {:ok, _metadata} <- Mailer.deliver(email) do
-      {:ok, email}
+    case Mailer.deliver(email) do
+      {:ok, _metadata} ->
+        {:ok, email}
+
+      {:error, error} ->
+        Logger.error("Could not deliver the email #{inspect(error)}")
+        {:error, error}
     end
   end
 
