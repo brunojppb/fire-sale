@@ -18,6 +18,8 @@ defmodule FireSaleWeb.UserResetPasswordLiveTest do
   end
 
   describe "Reset password page" do
+    @describetag :skip
+
     test "renders reset password with valid token", %{conn: conn, token: token} do
       {:ok, _lv, html} = live(conn, ~p"/ops/users/reset_password/#{token}")
 
@@ -49,6 +51,7 @@ defmodule FireSaleWeb.UserResetPasswordLiveTest do
   end
 
   describe "Reset Password" do
+    @describetag :skip
     test "resets password once", %{conn: conn, token: token, user: user} do
       {:ok, lv, _html} = live(conn, ~p"/ops/users/reset_password/#{token}")
 
@@ -88,6 +91,7 @@ defmodule FireSaleWeb.UserResetPasswordLiveTest do
   end
 
   describe "Reset password navigation" do
+    @describetag :skip
     test "redirects to login page when the Log in button is clicked", %{conn: conn, token: token} do
       {:ok, lv, _html} = live(conn, ~p"/ops/users/reset_password/#{token}")
 

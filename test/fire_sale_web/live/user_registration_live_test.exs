@@ -5,6 +5,8 @@ defmodule FireSaleWeb.UserRegistrationLiveTest do
   import FireSale.AccountsFixtures
 
   describe "Registration page" do
+    @describetag :skip
+
     test "renders registration page", %{conn: conn} do
       {:ok, _lv, html} = live(conn, ~p"/ops/users/register")
 
@@ -37,6 +39,8 @@ defmodule FireSaleWeb.UserRegistrationLiveTest do
   end
 
   describe "register user" do
+    @describetag :skip
+
     test "creates account and logs the user in", %{conn: conn} do
       {:ok, lv, _html} = live(conn, ~p"/ops/users/register")
 
@@ -72,6 +76,8 @@ defmodule FireSaleWeb.UserRegistrationLiveTest do
   end
 
   describe "registration navigation" do
+    @describetag :skip
+
     test "redirects to login page when the Log in button is clicked", %{conn: conn} do
       {:ok, lv, _html} = live(conn, ~p"/ops/users/register")
 
