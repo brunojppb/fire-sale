@@ -120,14 +120,20 @@ if config_env() == :prod do
   # Also, you may need to configure the Swoosh API client of your choice if you
   # are not using SMTP. Here is an example of the configuration:
   #
-  config :fire_sale, FireSale.Mailer,
-    adapter: Swoosh.Adapters.SMTP,
-    relay: System.get_env("SES_DOMAIN"),
-    username: System.get_env("SES_USERNAME"),
-    password: System.get_env("SES_PASSWORD"),
-    port: 2465,
-    auth: :always,
-    tls: :always
+  # config :fire_sale, FireSale.Mailer,
+  #   adapter: Swoosh.Adapters.SMTP,
+  #   relay: System.get_env("SES_DOMAIN"),
+  #   username: System.get_env("SES_USERNAME"),
+  #   password: System.get_env("SES_PASSWORD"),
+  #   port: 2465,
+  #   auth: :always,
+  #   tls: :always
+
+  config :sample, Sample.Mailer,
+    adapter: Swoosh.Adapters.AmazonSES,
+    region: "eu-west-1",
+    access_key: System.get_env("AWS_SES_ACCESS_KEY"),
+    secret: System.get_env("AWS_SES_SECRET_KEY")
 
   #
   # For this example you need include a HTTP client required by Swoosh API client.
