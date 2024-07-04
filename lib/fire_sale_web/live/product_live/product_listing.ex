@@ -25,6 +25,7 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
                   data-pswp-height={"#{Enum.at(@product.product_images, 0).height}"}
                   data-cropped="true"
                   target="_blank"
+                  class="gallery-item"
                 >
                   <img
                     class="h-full w-full object-cover object-center lg:h-full lg:w-full"
@@ -49,6 +50,7 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
                       href={~p"/pi/#{img.name}"}
                       data-pswp-width={img.width}
                       data-pswp-height={img.height}
+                      class="gallery-item"
                       target="_blank"
                     >
                       <img
@@ -63,7 +65,7 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
             </div>
             <div class="flex mb-4">
               <div class="px-2 w-full">
-                <.button disabled={@product.reserved}>
+                <.button disabled={@product.reserved} phx-click="go_to_reservation">
                   <%= if @product.reserved do %>
                     Not available.
                   <% else %>
@@ -74,19 +76,25 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
             </div>
           </div>
           <div class="md:flex-1 px-4">
-            <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2">
+            <h2 class={[
+              "text-2xl font-bold text-gray-800 dark:text-white mb-2",
+              @product.reserved && "line-through"
+            ]}>
               <%= @product.name %>
             </h2>
             <div class="flex mb-4 flex-col gap-4 lg:gap-8">
               <div class="mr-4">
-                <span class="text-3xl font-bold text-gray-900 dark:text-white">
+                <span class={[
+                  "text-3xl font-bold text-gray-900 dark:text-white",
+                  @product.reserved && "line-through"
+                ]}>
                   € <%= @product.price %>
                 </span>
               </div>
               <div>
                 <span class="font-bold text-gray-700 dark:text-gray-300">Availability:</span>
                 <%= if @product.reserved do %>
-                  <span class="text-red-600">Reserved</span>
+                  <span class="text-gray-600 dark:text-gray-300">Reserved</span>
                 <% else %>
                   <span class="text-gray-600 dark:text-gray-300">Available to pick-up</span>
                 <% end %>
@@ -95,7 +103,7 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
 
             <div>
               <span class="font-bold text-gray-700 dark:text-gray-300">Description:</span>
-              <p class="text-gray-600 dark:text-gray-300 text-sm mt-2">
+              <p class="text-gray-600 dark:text-gray-300 text-sm mt-2 whitespace-pre-line">
                 <%= @product.description %>
               </p>
             </div>
@@ -103,6 +111,21 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
         </div>
       </div>
     </div>
+
+    <.modal
+      :if={@live_action in [:reserve]}
+      id="reserve-product-modal"
+      show
+      on_cancel={JS.patch(~p"/p/#{@product}")}
+    >
+      <.live_component
+        module={FireSaleWeb.ProductLive.ReservationComponent}
+        id={@product.id}
+        action={@live_action}
+        product={@product}
+        patch={~p"/p/#{@product}"}
+      />
+    </.modal>
     """
   end
 
@@ -117,6 +140,11 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
   end
 
   @impl true
+  def handle_event("go_to_reservation", _params, socket) do
+    {:noreply, push_patch(socket, to: ~p"/p/#{socket.assigns.product}/r")}
+  end
+
+  @impl true
   def handle_params(%{"id" => product_id}, _, socket) do
     socket
     |> assign_product_or_redirect(product_id)
@@ -127,6 +155,25 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
   def handle_info(%{event: "product_saved"}, socket) do
     socket
     |> assign_product_or_redirect(socket.assigns.product.id)
+    |> noreply()
+  end
+
+  @impl true
+  def handle_info({FireSaleWeb.ProductLive.ReservationComponent, :redirect}, socket) do
+    socket
+    |> put_flash(:error, "Sorry, this product has been reserved to someone else")
+    |> redirect(to: ~p"/")
+    |> noreply()
+  end
+
+  @impl true
+  def handle_info({FireSaleWeb.ProductLive.ReservationComponent, :reservation_created}, socket) do
+    socket
+    |> put_flash(
+      :info,
+      "Please, check your email and click on the link to confirm your reservation"
+    )
+    |> redirect(to: ~p"/")
     |> noreply()
   end
 

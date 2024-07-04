@@ -11,6 +11,17 @@ config :fire_sale,
   ecto_repos: [FireSale.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+# Keep Oban jobs for 3 months so I can inspect them
+three_months_in_seconds = 7_776_000
+
+config :fire_sale, Oban,
+  engine: Oban.Engines.Basic,
+  plugins: [{Oban.Plugins.Pruner, max_age: three_months_in_seconds}],
+  queues: [default: 1],
+  repo: FireSale.Repo
+
+config :fire_sale, :email, System.get_env("SYSTEM_EMAIL") || "noreply@bye.bpaulino.com"
+
 # Configures the endpoint
 config :fire_sale, FireSaleWeb.Endpoint,
   url: [host: "localhost"],

@@ -58,3 +58,8 @@
         @apply bg-background text-foreground;
     }
 }
+
+.not-available {
+    filter: grayscale(1);
+    opacity: 0.5;
+}

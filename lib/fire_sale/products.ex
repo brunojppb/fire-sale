@@ -4,6 +4,7 @@ defmodule FireSale.Products do
   """
 
   import Ecto.Query, warn: false
+  import Ecto.Changeset
   alias FireSale.Repo
 
   alias FireSale.Products.Product
@@ -20,6 +21,12 @@ defmodule FireSale.Products do
   def list_products do
     query = from p in Product, order_by: fragment("? DESC", p.inserted_at), preload: [:user]
     Repo.all(query)
+  end
+
+  def mark_as_reserved(product_id) do
+    Repo.get_by(Product, id: product_id)
+    |> change(%{reserved: true})
+    |> Repo.update()
   end
 
   def list_products_with_images do

@@ -7,9 +7,12 @@ defmodule FireSale.Application do
 
   @impl true
   def start(_type, _args) do
+    Oban.Telemetry.attach_default_logger()
+
     children = [
       FireSaleWeb.Telemetry,
       FireSale.Repo,
+      {Oban, Application.fetch_env!(:fire_sale, Oban)},
       {DNSCluster, query: Application.get_env(:fire_sale, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: FireSale.PubSub},
       # Start the Finch HTTP client for sending emails

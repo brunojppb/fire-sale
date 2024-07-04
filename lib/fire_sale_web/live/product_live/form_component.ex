@@ -21,7 +21,7 @@ defmodule FireSaleWeb.ProductLive.FormComponent do
         phx-submit="save"
       >
         <.input field={@form[:name]} type="text" label="Name" data-1p-ignore />
-        <.input field={@form[:description]} type="text" label="Description" />
+        <.input field={@form[:description]} type="textarea" rows="5" label="Description" />
         <.input field={@form[:price]} type="number" label="Price" step="any" />
         <.input field={@form[:tags]} type="tag" label="Tags" />
         <.input field={@form[:published]} type="checkbox" label="Publish product?" />
@@ -59,6 +59,15 @@ defmodule FireSaleWeb.ProductLive.FormComponent do
 
     case Products.update_product(socket.assigns.product, params) do
       {:ok, product} ->
+        # In case the product was already reserved, but an admin
+        # marks it as unreserved, it should be available again to the public.
+        # It should invalidate previous reservations
+        if socket.assigns.product.reserved && !product.reserved do
+          %{cleanup_product_id: product.id}
+          |> FireSale.Worker.ReservationManager.new()
+          |> Oban.insert()
+        end
+
         notify_parent({:saved, product})
 
         {:noreply,

@@ -63,7 +63,10 @@ defmodule FireSaleWeb.HomeLive do
                 <img
                   src={~p"/pi/#{Enum.at(product.product_images, 0).name}"}
                   alt={product.name}
-                  class="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                  class={[
+                    "h-full w-full object-cover object-center lg:h-full lg:w-full",
+                    product.reserved && "not-available"
+                  ]}
                 />
               <% else %>
                 <img
@@ -76,7 +79,7 @@ defmodule FireSaleWeb.HomeLive do
             <div class="mt-4 flex flex-col justify-between">
               <div>
                 <h3 class="text-sm text-gray-700">
-                  <.link href={~p"/p/#{product.id}"} class="dark:text-zinc-50">
+                  <.link navigate={~p"/p/#{product.id}"} class="dark:text-zinc-50">
                     <span aria-hidden="true" class="absolute inset-0"></span>
                     <span class={[
                       "dark:text-zinc-50",
