@@ -1,7 +1,7 @@
 <.header>
   Listing Products
   <:actions>
-    <.link patch={~p"/products/new"}>
+    <.link patch={~p"/ops/products/new"}>
       <.button>New Product</.button>
     </.link>
   </:actions>
@@ -10,7 +10,7 @@
 <.table
   id="products"
   rows={@streams.products}
-  row_click={fn {_id, product} -> JS.navigate(~p"/products/#{product}") end}
+  row_click={fn {_id, product} -> JS.navigate(~p"/ops/products/#{product}") end}
 >
   <:col :let={{_id, product}} label="Name"><%= product.name %></:col>
   <:col :let={{_id, product}} label="Description"><%= product.description %></:col>
@@ -30,14 +30,14 @@
   </:col>
   <:action :let={{_id, product}}>
     <div class="sr-only">
-      <.link navigate={~p"/products/#{product}"} class="text-zinc-700 dark:text-zinc-300">
+      <.link navigate={~p"/ops/products/#{product}"} class="text-zinc-700 dark:text-zinc-300">
         Show
       </.link>
     </div>
-    <.link patch={~p"/products/#{product}/edit"} class="text-zinc-700 dark:text-zinc-300">
+    <.link patch={~p"/ops/products/#{product}/edit"} class="text-zinc-700 dark:text-zinc-300">
       Edit
     </.link>
-    <.link patch={~p"/products/#{product}/images"} class="text-zinc-700 dark:text-zinc-300">
+    <.link patch={~p"/ops/products/#{product}/images"} class="text-zinc-700 dark:text-zinc-300">
       Add images
     </.link>
   </:action>
@@ -56,7 +56,7 @@
   :if={@live_action in [:new, :edit]}
   id="product-modal"
   show
-  on_cancel={JS.patch(~p"/products")}
+  on_cancel={JS.patch(~p"/ops/products")}
 >
   <.live_component
     module={FireSaleWeb.ProductLive.FormComponent}
@@ -65,7 +65,7 @@
     action={@live_action}
     product={@product}
     current_user={@current_user}
-    patch={~p"/products"}
+    patch={~p"/ops/products"}
   />
 </.modal>
 
@@ -73,13 +73,13 @@
   :if={@live_action in [:add_image]}
   id="product-image-modal"
   show
-  on_cancel={JS.patch(~p"/products")}
+  on_cancel={JS.patch(~p"/ops/products")}
 >
   <.live_component
     module={FireSaleWeb.ProductLive.ImageFormComponent}
     id={@product.id || :new}
     action={@live_action}
     product={@product}
-    patch={~p"/products"}
+    patch={~p"/ops/products"}
   />
 </.modal>

@@ -54,7 +54,7 @@ defmodule FireSaleWeb.Router do
 
   ## Authentication routes
 
-  scope "/", FireSaleWeb do
+  scope "/ops", FireSaleWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
     live_session :redirect_if_user_is_authenticated,
@@ -68,7 +68,7 @@ defmodule FireSaleWeb.Router do
     post "/users/log_in", UserSessionController, :create
   end
 
-  scope "/", FireSaleWeb do
+  scope "/ops", FireSaleWeb do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
@@ -86,7 +86,7 @@ defmodule FireSaleWeb.Router do
     end
   end
 
-  scope "/", FireSaleWeb do
+  scope "/ops", FireSaleWeb do
     pipe_through [:browser]
 
     delete "/users/log_out", UserSessionController, :delete
