@@ -103,7 +103,7 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
 
             <div>
               <span class="font-bold text-gray-700 dark:text-gray-300">Description:</span>
-              <p class="text-gray-600 dark:text-gray-300 text-sm mt-2">
+              <p class="text-gray-600 dark:text-gray-300 text-sm mt-2 whitespace-pre-line">
                 <%= @product.description %>
               </p>
             </div>

@@ -1,4 +1,4 @@
-defmodule FireSale.Worker.Mailman do
+defmodule FireSale.Worker.ReservationManager do
   @moduledoc """
   Worker for sending emails in the background during reservation attempts
   """
@@ -10,7 +10,7 @@ defmodule FireSale.Worker.Mailman do
   import Ecto.Query
   require Logger
 
-  @impl true
+  @impl Oban.Worker
   def perform(%Oban.Job{args: %{"reservation_id" => id, "url" => url}} = _args) do
     query =
       from r in Reservation,
@@ -31,5 +31,20 @@ defmodule FireSale.Worker.Mailman do
         Logger.info("Sending reservation email to #{email}")
         :ok
     end
+  end
+
+  @impl Oban.Worker
+  def perform(%Oban.Job{args: %{"cleanup_product_id" => id}} = _args) do
+    query =
+      from r in Reservation,
+        where: r.product_id == ^id,
+        update: [set: [status: "revoked"]]
+
+    case FireSale.Repo.update_all(query, []) do
+      result ->
+        Logger.info("Reservation revoked: #{inspect(result)}")
+    end
+
+    :ok
   end
 end

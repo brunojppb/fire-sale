@@ -35,7 +35,7 @@ defmodule FireSale.Reservations do
         token = Base.url_encode64(reservation.token, padding: false)
 
         %{reservation_id: reservation.id, url: reservation_url_fun.(token)}
-        |> FireSale.Worker.Mailman.new()
+        |> FireSale.Worker.ReservationManager.new()
         |> Oban.insert()
 
         {:ok, reservation}
@@ -55,8 +55,8 @@ defmodule FireSale.Reservations do
       from r in Reservation,
         join: p in Product,
         on: r.product_id == p.id,
-        where: r.token == ^token_binary,
-        select: {r.id, p.id, p.reserved}
+        where: r.token == ^token_binary and r.status == "pending" and not p.reserved,
+        select: {r.id, p.id}
 
     case Repo.one(query) do
       nil ->
@@ -65,21 +65,17 @@ defmodule FireSale.Reservations do
       # @TODO
       # In case it is already reserved, then just deny it.
       # otherwise, mark the product as reserved for the user and update the product flag.
-      {reservation_id, product_id, is_reserved} ->
-        if is_reserved do
-          {:error, "Sorry, This product has already been reserved by someone else."}
-        else
-          from(p in Product, where: p.id == ^product_id, update: [set: [reserved: true]])
-          |> Repo.update_all([])
+      {reservation_id, product_id} ->
+        from(p in Product, where: p.id == ^product_id, update: [set: [reserved: true]])
+        |> Repo.update_all([])
 
-          from(r in Reservation,
-            where: r.id == ^reservation_id,
-            update: [set: [status: "confirmed"]]
-          )
-          |> Repo.update_all([])
+        from(r in Reservation,
+          where: r.id == ^reservation_id,
+          update: [set: [status: "confirmed"]]
+        )
+        |> Repo.update_all([])
 
-          {:ok, "cool"}
-        end
+        {:ok, "cool"}
     end
   end
 
