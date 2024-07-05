@@ -9,7 +9,9 @@ defmodule FireSaleWeb.ProductLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :products, Products.list_products_with_images())}
+    socket
+    |> assign_products()
+    |> ok()
   end
 
   @impl true
@@ -46,7 +48,7 @@ defmodule FireSaleWeb.ProductLive.Index do
     Endpoint.broadcast(@products_topic, "product_saved", %{})
 
     socket
-    |> assign(:products, Products.list_products_with_images())
+    |> assign_products()
     |> noreply()
   end
 
@@ -55,7 +57,7 @@ defmodule FireSaleWeb.ProductLive.Index do
     Endpoint.broadcast(@products_topic, "product_saved", %{})
 
     socket
-    |> assign(:products, Products.list_products_with_images())
+    |> assign_products()
     |> noreply()
   end
 
@@ -64,6 +66,13 @@ defmodule FireSaleWeb.ProductLive.Index do
     product = Products.get_product!(id)
     {:ok, _} = Products.delete_product(product)
 
-    {:noreply, assign(socket, :products, Products.list_products_with_images())}
+    socket
+    |> assign_products()
+    |> noreply()
+  end
+
+  defp assign_products(socket) do
+    products = Products.list_admin_products()
+    assign(socket, :products, products)
   end
 end
