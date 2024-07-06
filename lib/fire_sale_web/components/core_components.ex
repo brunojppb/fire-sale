@@ -511,7 +511,7 @@ defmodule FireSaleWeb.CoreComponents do
 
     ~H"""
     <div class="overflow-y-auto px-4 sm:overflow-visible sm:px-0">
-      <table class="w-[40rem] mt-11 sm:w-full">
+      <table class="w-[40rem] sm:w-full">
         <thead class="text-sm text-left leading-6 text-zinc-500 dark:text-zinc-50">
           <tr>
             <th :for={col <- @col} class="p-0 pb-4 pr-6 font-normal"><%= col[:label] %></th>
@@ -658,7 +658,7 @@ defmodule FireSaleWeb.CoreComponents do
   def badge(%{value: value} = assigns) do
     classes = [
       "bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300",
-      "bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300",
+      "bg-green-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-700 dark:text-white",
       "bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300",
       "bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300",
       "bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300",
@@ -673,6 +673,45 @@ defmodule FireSaleWeb.CoreComponents do
 
     ~H"""
     <span class={@class}><%= @value %></span>
+    """
+  end
+
+  def shopping_cart_icon(assigns) do
+    ~H"""
+    <svg
+      fill="currentColor"
+      viewBox="0 0 16 16"
+      class="fill-current text-gray-500 dark:text-white w-3 h-3 mr-2"
+      height="1em"
+      width="1em"
+    >
+      <path d="M11.354 6.354a.5.5 0 00-.708-.708L8 8.293 6.854 7.146a.5.5 0 10-.708.708l1.5 1.5a.5.5 0 00.708 0l3-3z" />
+      <path d="M.5 1a.5.5 0 000 1h1.11l.401 1.607 1.498 7.985A.5.5 0 004 12h1a2 2 0 100 4 2 2 0 000-4h7a2 2 0 100 4 2 2 0 000-4h1a.5.5 0 00.491-.408l1.5-8A.5.5 0 0014.5 3H2.89l-.405-1.621A.5.5 0 002 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
+    </svg>
+    """
+  end
+
+  def lock_icon(assigns) do
+    ~H"""
+    <svg
+      class="fill-current text-gray-500 dark:text-white w-3 h-3 mr-2"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+    >
+      <path d="M4 8V6a6 6 0 1 1 12 0v2h1a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-8c0-1.1.9-2 2-2h1zm5 6.73V17h2v-2.27a2 2 0 1 0-2 0zM7 6v2h6V6a3 3 0 0 0-6 0z" />
+    </svg>
+    """
+  end
+
+  def email_icon(assigns) do
+    ~H"""
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      class="fill-current text-gray-500 dark:text-white w-10 h-10 mr-2"
+    >
+      <path d="M12 .64L8.23 3H5v2L2.97 6.29C2.39 6.64 2 7.27 2 8v10a2 2 0 002 2h16c1.11 0 2-.89 2-2V8c0-.73-.39-1.36-.97-1.71L19 5V3h-3.23M7 5h10v4.88L12 13 7 9.88M8 6v1.5h8V6M5 7.38v1.25L4 8m15-.62L20 8l-1 .63M8 8.5V10h8V8.5z" />
+    </svg>
     """
   end
 

@@ -169,11 +169,7 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
   @impl true
   def handle_info({FireSaleWeb.ProductLive.ReservationComponent, :reservation_created}, socket) do
     socket
-    |> put_flash(
-      :info,
-      "Please, check your email and click on the link to confirm your reservation"
-    )
-    |> redirect(to: ~p"/")
+    |> redirect(to: ~p"/r/s/thx")
     |> noreply()
   end
 

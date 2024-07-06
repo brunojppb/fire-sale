@@ -36,6 +36,15 @@ defmodule FireSale.Products do
     Repo.all(query)
   end
 
+  def list_admin_products do
+    query =
+      from p in Product,
+        order_by: fragment("? DESC", p.inserted_at),
+        preload: [:product_images, :reservations]
+
+    Repo.all(query)
+  end
+
   def list_published_products do
     query =
       from p in Product,

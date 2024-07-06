@@ -27,6 +27,7 @@ defmodule FireSaleWeb.Router do
       live "/", HomeLive, :index
       live "/p/:id", ProductLive.ProductListing, :index
       live "/p/:id/r", ProductLive.ProductListing, :reserve
+      live "/r/s/thx", ProductLive.PostReservation, :index
     end
   end
 
