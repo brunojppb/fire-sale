@@ -24,4 +24,8 @@ defmodule FireSaleWeb.ReservationConfirmationController do
         |> redirect(to: ~p"/")
     end
   end
+
+  def post_form_page(conn) do
+    render(conn, "post_form_page.html")
+  end
 end

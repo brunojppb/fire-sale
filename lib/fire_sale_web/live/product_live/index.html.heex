@@ -28,9 +28,9 @@
       <div class="mb-8">
         <p class="text-sm text-gray-600 flex items-center dark:text-white">
           <%= if product.published do %>
-            <.shopping_cart_icon/>
+            <.shopping_cart_icon />
           <% else %>
-            <.lock_icon/>
+            <.lock_icon />
           <% end %>
           <%= if product.published, do: "Product is published", else: "Product hidden" %>
         </p>
@@ -46,7 +46,7 @@
             <%= for r <- product.reservations do %>
               <li>
                 <span><%= r.email %></span>
-                <.badge value={r.status}/>
+                <.badge value={r.status} />
               </li>
             <% end %>
           </ul>
