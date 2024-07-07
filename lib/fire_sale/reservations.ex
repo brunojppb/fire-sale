@@ -70,7 +70,7 @@ defmodule FireSale.Reservations do
         join: p in Product,
         on: r.product_id == p.id,
         where: r.token == ^token_binary and r.status == "pending" and not p.reserved,
-        select: {r.id, p.id}
+        select: {r.id, r.name, r.email, p.id, p.name}
 
     case Repo.one(query) do
       nil ->
@@ -79,7 +79,7 @@ defmodule FireSale.Reservations do
       # @TODO
       # In case it is already reserved, then just deny it.
       # otherwise, mark the product as reserved for the user and update the product flag.
-      {reservation_id, product_id} ->
+      {reservation_id, person_name, email, product_id, product_name} ->
         from(p in Product, where: p.id == ^product_id, update: [set: [reserved: true]])
         |> Repo.update_all([])
 
@@ -88,6 +88,12 @@ defmodule FireSale.Reservations do
           update: [set: [status: "confirmed"]]
         )
         |> Repo.update_all([])
+
+        FireSale.Products.ReservationNotifier.notify_confirmation_admin_chat(
+          person_name,
+          email,
+          product_name
+        )
 
         {:ok, "cool"}
     end

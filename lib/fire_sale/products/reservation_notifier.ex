@@ -27,6 +27,26 @@ defmodule FireSale.Products.ReservationNotifier do
     end
   end
 
+  def notify_reservation_admin_chat(name, email, product_name) do
+    msg = """
+    ⏳ Reservation pending
+    Product: #{product_name}
+    Created by: #{name} : #{email}
+    """
+
+    FireSale.Notification.ChatNotifier.send_message(msg)
+  end
+
+  def notify_confirmation_admin_chat(name, email, product_name) do
+    msg = """
+    ✅ Reservation confirmed
+    Product: #{product_name}
+    Confirmed by: #{name} : #{email}
+    """
+
+    FireSale.Notification.ChatNotifier.send_message(msg)
+  end
+
   @doc """
   Deliver instructions to confirm account.
   """
