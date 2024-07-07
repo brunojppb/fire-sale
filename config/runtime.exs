@@ -20,6 +20,13 @@ if System.get_env("PHX_SERVER") do
   config :fire_sale, FireSaleWeb.Endpoint, server: true
 end
 
+# Telegram Bot integration for reservation updates
+if System.get_env("TELEGRAM_CHAT_ID") && System.get_env("TELEGRAM_TOKEN") do
+  config :fire_sale, :telegram_chat_id, System.get_env("TELEGRAM_CHAT_ID")
+  config :fire_sale, :telegram_bot_token, System.get_env("TELEGRAM_TOKEN")
+  config :fire_sale, :chat_notifier, FireSale.Notification.TelegramNotifier
+end
+
 # S3 uploads config
 # If present, it takes over file system uploads for artifacts
 if System.get_env("S3_BUCKET_NAME") &&
@@ -118,28 +125,13 @@ if config_env() == :prod do
   #
   # In production you need to configure the mailer to use a different adapter.
   # Also, you may need to configure the Swoosh API client of your choice if you
-  # are not using SMTP. Here is an example of the configuration:
-  #
-  # config :fire_sale, FireSale.Mailer,
-  #   adapter: Swoosh.Adapters.SMTP,
-  #   relay: System.get_env("SES_DOMAIN"),
-  #   username: System.get_env("SES_USERNAME"),
-  #   password: System.get_env("SES_PASSWORD"),
-  #   port: 2465,
-  #   auth: :always,
-  #   tls: :always
-
-  config :fire_sale, FireSale.Mailer,
-    adapter: Swoosh.Adapters.AmazonSES,
-    region: "eu-west-1",
-    access_key: System.get_env("AWS_SES_ACCESS_KEY"),
-    secret: System.get_env("AWS_SES_SECRET_KEY")
-
-  #
-  # For this example you need include a HTTP client required by Swoosh API client.
-  # Swoosh supports Hackney and Finch out of the box:
-  #
-  #     config :swoosh, :api_client, Swoosh.ApiClient.Hackney
-  #
+  # are not using SMTP. Here is an example of the configuration
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
+  if System.get_env("AWS_SES_ACCESS_KEY") && System.get_env("AWS_SES_SECRET_KEY") do
+    config :fire_sale, FireSale.Mailer,
+      adapter: Swoosh.Adapters.AmazonSES,
+      region: "eu-west-1",
+      access_key: System.get_env("AWS_SES_ACCESS_KEY"),
+      secret: System.get_env("AWS_SES_SECRET_KEY")
+  end
 end

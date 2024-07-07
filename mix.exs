@@ -62,6 +62,7 @@ defmodule FireSale.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
+      {:req, "~> 0.5.0"},
       {:bandit, "~> 1.5"},
       {:mogrify, "~> 0.9.3"},
       {:ex_aws, "~> 2.5"},
