@@ -5,8 +5,7 @@ defmodule FireSale.Notification.ChatNotifier do
   @type t :: module()
 
   @doc """
-  Copy the given file to a data storage.
-  Returns the filename in case of success.
+  Send notification message to the configured chat output
   """
   @callback send_message(message :: String.t()) ::
               FireSale.result(String.t())
