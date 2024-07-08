@@ -1,5 +1,6 @@
 defmodule FireSaleWeb.ProductLive.ImageFormComponent do
   alias FireSale.Products.ProductImage
+  alias FireSale.ProductImages
   use FireSaleWeb, :live_component
 
   require Logger
@@ -32,16 +33,6 @@ defmodule FireSaleWeb.ProductLive.ImageFormComponent do
                 <%!-- entry.progress will update automatically for in-flight entries --%>
                 <progress value={entry.progress} max="100"><%= entry.progress %>%</progress>
 
-                <%!-- a regular click event whose handler will invoke Phoenix.LiveView.cancel_upload/3 --%>
-                <%!-- <button
-                  type="button"
-                  phx-click="cancel-upload"
-                  phx-value-ref={entry.ref}
-                  aria-label="cancel"
-                >
-                  &times;
-                </button> --%>
-
                 <%!-- Phoenix.Component.upload_errors/2 returns a list of error atoms --%>
                 <%= for err <- upload_errors(@uploads.product_image, entry) do %>
                   <p class="alert alert-danger"><%= error_to_string(err) %></p>
@@ -62,6 +53,14 @@ defmodule FireSaleWeb.ProductLive.ImageFormComponent do
                   alt=""
                 />
               </div>
+              <.link
+                phx-click={JS.push("delete", value: %{product_image_id: img.id})}
+                phx-target={@myself}
+                data-confirm="Are you sure?"
+              >
+                <.icon name="hero-trash" class="ml-1 h-4 w-4" />
+                <span class="sr-only">Delete</span>
+              </.link>
             </div>
           <% end %>
         </div>
@@ -89,6 +88,16 @@ defmodule FireSaleWeb.ProductLive.ImageFormComponent do
   @impl true
   def handle_event("validate", _params, socket) do
     {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("delete", %{"product_image_id" => id} = _params, socket) do
+    img = ProductImages.get_product_image!(id)
+    {:ok, _} = ProductImages.delete_product_image(img)
+
+    {:noreply,
+     socket
+     |> assign_product_images(socket.assigns.product)}
   end
 
   @impl true

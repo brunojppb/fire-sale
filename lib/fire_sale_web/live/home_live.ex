@@ -56,13 +56,14 @@ defmodule FireSaleWeb.HomeLive do
       </h2>
 
       <div class="mt-6 grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
-        <%= for product <- @products do %>
+        <%= for {product, index} <- Enum.with_index(@products) do %>
           <div class="group relative">
             <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 h-60">
               <%= if length(product.product_images) > 0 do %>
                 <img
                   src={~p"/pi/#{Enum.at(product.product_images, 0).name}"}
                   alt={product.name}
+                  loading={if index > 4, do: "lazy", else: "eager"}
                   class={[
                     "h-full w-full object-cover object-center lg:h-full lg:w-full",
                     product.reserved && "not-available"
@@ -72,6 +73,7 @@ defmodule FireSaleWeb.HomeLive do
                 <img
                   src={~p"/images/no_img.jpg"}
                   alt={product.name}
+                  loading={if index > 4, do: "lazy", else: "eager"}
                   class="h-full w-full object-cover object-center lg:h-full lg:w-full"
                 />
               <% end %>
