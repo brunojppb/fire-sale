@@ -23,7 +23,7 @@ defmodule FireSale.MixProject do
   def application do
     [
       mod: {FireSale.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :os_mon]
     ]
   end
 
@@ -40,6 +40,7 @@ defmodule FireSale.MixProject do
       {:phoenix, "~> 1.7.14"},
       {:phoenix_ecto, "~> 4.5"},
       {:ecto_sql, "~> 3.10"},
+      {:ecto_psql_extras, "~> 0.6"},
       {:postgrex, ">= 0.0.0"},
       {:phoenix_html, "~> 4.1"},
       # TODO bump on release to {:phoenix_live_view, "~> 1.0.0"},

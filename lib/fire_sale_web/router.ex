@@ -1,6 +1,7 @@
 defmodule FireSaleWeb.Router do
   use FireSaleWeb, :router
 
+  import Phoenix.LiveDashboard.Router
   import FireSaleWeb.UserAuth
 
   pipeline :browser do
@@ -38,17 +39,9 @@ defmodule FireSaleWeb.Router do
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:fire_sale, :dev_routes) do
-    # If you want to use the LiveDashboard in production, you should put
-    # it behind authentication and allow only admins to access it.
-    # If your application does not have an admins-only section yet,
-    # you can use Plug.BasicAuth to set up some basic authentication
-    # as long as you are also using SSL (which you should anyway).
-    import Phoenix.LiveDashboard.Router
-
     scope "/dev" do
       pipe_through :browser
 
-      live_dashboard "/dashboard", metrics: FireSaleWeb.Telemetry
       forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
@@ -71,6 +64,11 @@ defmodule FireSaleWeb.Router do
 
   scope "/ops", FireSaleWeb do
     pipe_through [:browser, :require_authenticated_user]
+
+    live_dashboard "/dashboard",
+      metrics: FireSaleWeb.Telemetry,
+      ecto_repos: [FireSale.Repo],
+      ecto_psql_extras_options: [long_running_queries: [threshold: "200 milliseconds"]]
 
     live_session :require_authenticated_user,
       on_mount: [{FireSaleWeb.UserAuth, :ensure_authenticated}] do
