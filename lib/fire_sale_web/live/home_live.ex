@@ -85,7 +85,7 @@ defmodule FireSaleWeb.HomeLive do
                   <.link navigate={~p"/p/#{product.id}"} class="dark:text-zinc-50">
                     <span aria-hidden="true" class="absolute inset-0"></span>
                     <span class={[
-                      "dark:text-zinc-50 text-md lg:text-xl font-bold",
+                      "dark:text-zinc-50 text-md font-bold",
                       product.reserved && "line-through"
                     ]}>
                       <%= product.name %>
