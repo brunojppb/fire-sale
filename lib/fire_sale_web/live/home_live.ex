@@ -55,7 +55,7 @@ defmodule FireSaleWeb.HomeLive do
         Garage Sale ‧ Items
       </h2>
 
-      <div class="mt-6 grid grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
+      <div class="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
         <%= for {product, index} <- Enum.with_index(@products) do %>
           <div class="group relative">
             <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 h-60">
@@ -63,7 +63,7 @@ defmodule FireSaleWeb.HomeLive do
                 <img
                   src={~p"/pi/#{Enum.at(product.product_images, 0).name}"}
                   alt={product.name}
-                  loading={if index > 4, do: "lazy", else: "eager"}
+                  loading={if index > 2, do: "lazy", else: "eager"}
                   class={[
                     "h-full w-full object-cover object-center lg:h-full lg:w-full",
                     product.reserved && "not-available"
@@ -73,7 +73,7 @@ defmodule FireSaleWeb.HomeLive do
                 <img
                   src={~p"/images/no_img.jpg"}
                   alt={product.name}
-                  loading={if index > 4, do: "lazy", else: "eager"}
+                  loading={if index > 2, do: "lazy", else: "eager"}
                   class="h-full w-full object-cover object-center lg:h-full lg:w-full"
                 />
               <% end %>
@@ -84,7 +84,7 @@ defmodule FireSaleWeb.HomeLive do
                   <.link navigate={~p"/p/#{product.id}"} class="dark:text-zinc-50">
                     <span aria-hidden="true" class="absolute inset-0"></span>
                     <span class={[
-                      "dark:text-zinc-50",
+                      "dark:text-zinc-50 text-md lg:text-xl font-bold",
                       product.reserved && "line-through"
                     ]}>
                       <%= product.name %>
