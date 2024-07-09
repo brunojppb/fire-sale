@@ -1,4 +1,5 @@
 defmodule FireSaleWeb.HomeLive do
+  alias FireSale.Products.ProductImage
   alias FireSaleWeb.Endpoint
   use FireSaleWeb, :live_view
 
@@ -55,13 +56,13 @@ defmodule FireSaleWeb.HomeLive do
         Garage Sale ‧ Items
       </h2>
 
-      <div class="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4 xl:gap-x-8">
+      <div class="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 lg:grid-cols-8 xl:gap-x-8">
         <%= for {product, index} <- Enum.with_index(@products) do %>
           <div class="group relative">
-            <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 h-60">
+            <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 h-40">
               <%= if length(product.product_images) > 0 do %>
                 <img
-                  src={~p"/pi/#{Enum.at(product.product_images, 0).name}"}
+                  src={~p"/pi/#{ProductImage.thumb(Enum.at(product.product_images, 0))}"}
                   alt={product.name}
                   loading={if index > 2, do: "lazy", else: "eager"}
                   class={[
