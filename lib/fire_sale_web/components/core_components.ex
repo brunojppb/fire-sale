@@ -655,6 +655,10 @@ defmodule FireSaleWeb.CoreComponents do
   """
   attr :value, :string, required: true
 
+  attr :kind, :atom,
+    values: [:available, :scheduled, :executing, :retryable, :completed, :discarded],
+    doc: "Force style for the badge instead of relying on the String length"
+
   def badge(%{value: value} = assigns) do
     classes = [
       "bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300",
@@ -668,7 +672,22 @@ defmodule FireSaleWeb.CoreComponents do
     ]
 
     style_index = Kernel.rem(String.length(value), length(classes))
-    class = Enum.at(classes, style_index)
+
+    # This is 100% coupled with the states from the Oban jobs as seen here:
+    # https://github.com/sorentwo/oban/blob/d2c19b4a533a9309e28fe84b5f220fe29f5defec/lib/oban/migrations/postgres/v01.ex#L18-L23
+    # But I don't plan to support other badge states, so 🤷
+    class =
+      if Map.has_key?(assigns, :kind) do
+        case assigns.kind do
+          :completed -> Enum.at(classes, 1)
+          :discarded -> Enum.at(classes, 2)
+          :available -> Enum.at(classes, 4)
+          _ -> Enum.at(classes, style_index)
+        end
+      else
+        Enum.at(classes, style_index)
+      end
+
     assigns = assign(assigns, :class, class)
 
     ~H"""
