@@ -54,6 +54,7 @@ defmodule FireSale.MixProject do
        app: false,
        compile: false,
        depth: 1},
+      {:sentry, "~> 10.2.0"},
       {:oban, "~> 2.17"},
       {:swoosh, "~> 1.5"},
       {:gen_smtp, "~> 1.2"},
