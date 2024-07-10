@@ -41,7 +41,7 @@
           <div class="py-4 flex gap-2 flex-wrap">
             <%= for img <- product.product_images do %>
               <div class="group relative">
-                <div class="aspect-square w-20 overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75">
+                <div class="aspect-square w-12 md:w-20 overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75">
                   <img
                     src={~p"/pi/#{FireSale.Products.ProductImage.thumb(img)}"}
                     alt={product.name}
