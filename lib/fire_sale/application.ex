@@ -9,6 +9,10 @@ defmodule FireSale.Application do
   def start(_type, _args) do
     Oban.Telemetry.attach_default_logger()
 
+    :logger.add_handler(:sentry_handler, Sentry.LoggerHandler, %{
+      config: %{metadata: [:file, :line]}
+    })
+
     children = [
       FireSaleWeb.Telemetry,
       FireSale.Repo,
