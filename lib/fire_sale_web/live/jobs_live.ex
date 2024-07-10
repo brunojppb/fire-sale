@@ -46,8 +46,6 @@ defmodule FireSaleWeb.JobsLive do
   def assign_jobs(socket) do
     jobs = ObanJobs.all()
 
-    dbg(jobs)
-
     assign(socket, :jobs, jobs)
   end
 end
