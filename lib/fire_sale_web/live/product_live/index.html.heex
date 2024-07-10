@@ -9,22 +9,7 @@
 
 <%= for product <- @products do %>
   <div class="max-w-sm w-full lg:max-w-full lg:flex mx-auto mt-4" id={"products-#{product.id}"}>
-    <%= if length(product.product_images) > 0 do %>
-      <div
-        class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
-        style={"background-image: url('#{~p"/pi/#{Enum.at(product.product_images, 0).name}"}')"}
-        title={product.name}
-      >
-      </div>
-    <% else %>
-      <div
-        class="h-48 lg:h-auto lg:w-48 flex-none bg-cover rounded-t lg:rounded-t-none lg:rounded-l text-center overflow-hidden"
-        style={"background-image: url('#{~p"/images/no_img.jpg"}')"}
-      >
-      </div>
-    <% end %>
-
-    <div class="border dark:border-none border-gray-400 bg-white dark:bg-gray-700 rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal w-full">
+    <div class="bg-zinc-200 dark:bg-gray-800 rounded-b lg:rounded-b-none lg:rounded-r p-4 flex flex-col justify-between leading-normal w-full">
       <div class="mb-8">
         <p class="text-sm text-gray-600 flex items-center dark:text-white">
           <%= if product.published do %>
@@ -50,6 +35,25 @@
               </li>
             <% end %>
           </ul>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold mt-2">Gallery</h3>
+          <div class="py-4 flex gap-2 flex-wrap">
+            <%= for img <- product.product_images do %>
+              <div class="group relative">
+                <div class="aspect-square w-12 md:w-20 overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75">
+                  <img
+                    src={~p"/pi/#{FireSale.Products.ProductImage.thumb(img)}"}
+                    alt={product.name}
+                    class="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                  />
+                </div>
+              </div>
+            <% end %>
+            <%= if length(product.product_images) <= 0 do %>
+              <span>No images yet</span>
+            <% end %>
+          </div>
         </div>
       </div>
       <div class="flex items-center">
