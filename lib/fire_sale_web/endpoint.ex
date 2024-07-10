@@ -53,3 +53,9 @@ defmodule FireSaleWeb.Endpoint do
   plug Plug.Session, @session_options
   plug FireSaleWeb.Router
 end
+
+# Little hack to render Maps as JSON in HTML payloads
+defimpl Phoenix.HTML.Safe, for: Map do
+  def to_iodata(data),
+    do: data |> Jason.encode!() |> Jason.Formatter.pretty_print() |> Plug.HTML.html_escape()
+end

@@ -7,6 +7,7 @@ defmodule FireSale.Worker.ObanJobs do
   alias FireSale.Repo
 
   def all() do
-    Repo.all(ObanJob)
+    query = from j in ObanJob, order_by: fragment("? DESC", j.inserted_at)
+    Repo.all(query)
   end
 end
