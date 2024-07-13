@@ -1,8 +1,9 @@
 defmodule FireSaleWeb.ProductImageController do
   use FireSaleWeb, :controller
 
-  # Cache control time in seconds
-  @six_months 15_778_476
+  # Cache control time in seconds 15_778_476
+  @six_months 60 * 60 * 24 * 31 * 6
+  @one_hour 60 * 60
 
   def show(conn, %{"filename" => filename}) do
     # All our uploads are public by default,
@@ -12,7 +13,12 @@ defmodule FireSaleWeb.ProductImageController do
   end
 
   defp stream_resp({:error, _}, conn) do
-    send_resp(conn, 404, "Error 404: Image not found")
+    conn
+    |> put_resp_header(
+      "cache-control",
+      "public, max-age=#{@one_hour}, s-maxage=#{@one_hour}"
+    )
+    |> send_resp(404, "Error 404: Image not found")
   end
 
   defp stream_resp({:ok, stream}, conn) do
