@@ -1,6 +1,9 @@
 defmodule FireSaleWeb.ProductImageController do
   use FireSaleWeb, :controller
 
+  # Cache control time in seconds
+  @six_months 15_778_476
+
   def show(conn, %{"filename" => filename}) do
     # All our uploads are public by default,
     # so we don't have to check for ownership
@@ -16,7 +19,10 @@ defmodule FireSaleWeb.ProductImageController do
     conn
     |> put_resp_content_type("image/jpeg")
     # Cache for 6 months
-    |> put_resp_header("cache-control", "public, max-age=15778476")
+    |> put_resp_header(
+      "cache-control",
+      "public, max-age=#{@six_months}, s-maxage=#{@six_months}, immutable"
+    )
     |> send_chunked(200)
     |> send_chunked_stream(stream)
   end
