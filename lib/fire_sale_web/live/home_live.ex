@@ -101,7 +101,11 @@ defmodule FireSaleWeb.HomeLive do
                   "text-sm font-medium text-gray-900 dark:text-zinc-50 font-bold",
                   product.reserved && "line-through"
                 ]}>
-                  € <%= product.price %>
+                  <%= if Decimal.compare(product.price, 0) == :gt do %>
+                    € <%= product.price %>
+                  <% else %>
+                    FREE
+                  <% end %>
                 </p>
               </div>
             </div>
