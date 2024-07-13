@@ -58,7 +58,10 @@ defmodule FireSaleWeb.HomeLive do
 
       <div class="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 lg:grid-cols-8 xl:gap-x-8">
         <%= for {product, index} <- Enum.with_index(@products) do %>
-          <div class="group relative">
+          <div class={[
+            "group relative",
+            @current_user && !product.published && "border border-rose-500 p-2 border-dashed"
+          ]}>
             <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 h-40">
               <%= if length(product.product_images) > 0 do %>
                 <img
@@ -133,7 +136,12 @@ defmodule FireSaleWeb.HomeLive do
   end
 
   defp assign_products(socket) do
-    products = Products.list_published_products()
+    products =
+      if socket.assigns[:current_user] do
+        Products.list_products_with_images()
+      else
+        Products.list_published_products()
+      end
 
     socket
     |> assign(products: products)
