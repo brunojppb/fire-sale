@@ -189,8 +189,6 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
         &Products.get_published_product/1
       end
 
-    dbg(product_fetch_fn)
-
     case product_fetch_fn.(product_id) do
       nil ->
         socket
