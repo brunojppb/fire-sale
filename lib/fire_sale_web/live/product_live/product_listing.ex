@@ -88,7 +88,11 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
                   "text-3xl font-bold text-gray-900 dark:text-white",
                   @product.reserved && "line-through"
                 ]}>
+                <%= if Decimal.compare(@product.price, 0) == :gt do %>
                   € <%= @product.price %>
+                <% else %>
+                  FREE
+                <% end %>
                 </span>
               </div>
               <div>
