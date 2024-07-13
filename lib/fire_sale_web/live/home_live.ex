@@ -34,7 +34,7 @@ defmodule FireSaleWeb.HomeLive do
             role="img"
             aria-label="Spanish flag"
           >🇪🇸</span>,
-          so we built this website to make it easier to sell all of our stuff before we go.
+          so we built this little website to make it easier to sell all of our stuff before we go.
         </p>
         <p>
           Buying our stuff is super easy:
