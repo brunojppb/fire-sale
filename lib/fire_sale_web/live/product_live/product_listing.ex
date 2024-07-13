@@ -14,7 +14,10 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row -mx-4">
           <div class="md:flex-1 px-4" id="product-gallery">
-            <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-2 block lg:hidden">
+            <h2 class={[
+              "text-2xl font-bold text-gray-800 dark:text-white mb-2 block lg:hidden",
+              @current_user && !@product.published && "border border-rose-500 p-2 border-dashed"
+            ]}>
               <%= @product.name %>
             </h2>
             <div class="h-[460px] rounded-lg bg-gray-300 dark:bg-gray-700">
@@ -78,6 +81,7 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
           <div class="md:flex-1 px-4">
             <h2 class={[
               "text-2xl font-bold text-gray-800 dark:text-white mb-2",
+              @current_user && !@product.published && "border border-rose-500 p-2 border-dashed",
               @product.reserved && "line-through"
             ]}>
               <%= @product.name %>
@@ -178,7 +182,16 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
   end
 
   defp assign_product_or_redirect(socket, product_id) do
-    case Products.get_published_product(product_id) do
+    product_fetch_fn =
+      if socket.assigns[:current_user] do
+        &Products.get_product_with_images/1
+      else
+        &Products.get_published_product/1
+      end
+
+      dbg(product_fetch_fn)
+
+    case product_fetch_fn.(product_id) do
       nil ->
         socket
         |> put_flash(:error, "Product with id '#{product_id}' not found")
