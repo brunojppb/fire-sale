@@ -73,6 +73,24 @@ defmodule FireSaleWeb.ProductLive.Index do
 
   defp assign_products(socket) do
     products = Products.list_admin_products()
-    assign(socket, :products, products)
+
+    socket
+    |> assign(:products, products)
+    |> assign_totals()
+  end
+
+  defp assign_totals(socket) do
+    {total, reserved} =
+      socket.assigns.products
+      |> Enum.reduce({Decimal.new(0), Decimal.new(0)}, fn product, {total, reserved} ->
+        {
+          Decimal.add(total, product.price),
+          Decimal.add(reserved, if(product.reserved, do: product.price, else: Decimal.new(0)))
+        }
+      end)
+
+    socket
+    |> assign(:total, total)
+    |> assign(:reserved, reserved)
   end
 end
