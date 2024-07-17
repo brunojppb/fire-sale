@@ -1,10 +1,6 @@
 defmodule FireSaleWeb.AboutLive do
   use FireSaleWeb, :live_view
 
-  alias FireSale.Products
-
-  @products_topic "products"
-
   def render(assigns) do
     ~H"""
     <div class="px-4 mx-auto sm:px-12 xl:max-w-6xl xl:px-0">
