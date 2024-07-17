@@ -19,13 +19,14 @@ defmodule FireSaleWeb.Router do
   end
 
   scope "/", FireSaleWeb do
-    pipe_through :browser
+    pipe_through [:browser]
 
     get "/pi/:filename", ProductImageController, :show
     get "/r/:token", ReservationConfirmationController, :show
 
     live_session :default, on_mount: [{FireSaleWeb.UserAuth, :mount_current_user}] do
       live "/", HomeLive, :index
+      live "/about", AboutLive, :index
       live "/p/:id", ProductLive.ProductListing, :index
       live "/p/:id/r", ProductLive.ProductListing, :reserve
       live "/r/s/thx", ProductLive.PostReservation, :index
