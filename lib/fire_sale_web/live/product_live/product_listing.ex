@@ -10,10 +10,10 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="bg-gray-100 dark:bg-zinc-800 py-8">
-      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col lg:flex-row -mx-4">
-          <div class="md:flex-1 px-4" id="product-gallery">
+    <div class="py-8 bg-gray-100 dark:bg-zinc-800">
+      <div class="max-w-6xl px-4 mx-auto sm:px-6 lg:px-8">
+        <div class="flex flex-col -mx-4 lg:flex-row">
+          <div class="px-4 md:flex-1" id="product-gallery">
             <h2 class={[
               "text-2xl font-bold text-gray-800 dark:text-white mb-2 block lg:hidden",
               @current_user && !@product.published && "border border-rose-500 p-2 border-dashed"
@@ -31,7 +31,7 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
                   class="gallery-item"
                 >
                   <img
-                    class="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                    class="object-cover object-center w-full h-full lg:h-full lg:w-full"
                     src={~p"/pi/#{Enum.at(@product.product_images, 0).name}"}
                     data-cropped="true"
                     alt={@product.name}
@@ -41,14 +41,14 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
                 <img
                   src={~p"/images/no_img.jpg"}
                   alt={@product.name}
-                  class="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                  class="object-cover object-center w-full h-full lg:h-full lg:w-full"
                 />
               <% end %>
             </div>
-            <div class="py-4 flex gap-2 flex-wrap">
+            <div class="flex flex-wrap gap-2 py-4">
               <%= for img <- Enum.drop(@product.product_images, 1) do %>
-                <div class="group relative">
-                  <div class="aspect-square w-20 overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75">
+                <div class="relative group">
+                  <div class="w-20 overflow-hidden bg-gray-200 rounded-md aspect-square lg:aspect-none group-hover:opacity-75">
                     <a
                       href={~p"/pi/#{img.name}"}
                       data-pswp-width={img.width}
@@ -59,7 +59,7 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
                       <img
                         src={~p"/pi/#{ProductImage.thumb(img)}"}
                         alt={@product.name}
-                        class="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                        class="object-cover object-center w-full h-full lg:h-full lg:w-full"
                       />
                     </a>
                   </div>
@@ -67,7 +67,7 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
               <% end %>
             </div>
             <div class="flex mb-4">
-              <div class="px-2 w-full">
+              <div class="w-full px-2">
                 <.button disabled={@product.reserved} phx-click="go_to_reservation">
                   <%= if @product.reserved do %>
                     Not available.
@@ -75,10 +75,13 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
                     Reserve product
                   <% end %>
                 </.button>
+                <%= if @current_user do %>
+                  <.link href={~p"/ops/products/#{@product.id}/edit"}>Admin edit</.link>
+                <% end %>
               </div>
             </div>
           </div>
-          <div class="md:flex-1 px-4">
+          <div class="px-4 md:flex-1">
             <h2 class={[
               "text-2xl font-bold text-gray-800 dark:text-white mb-2",
               @current_user && !@product.published && "border border-rose-500 p-2 border-dashed",
@@ -86,7 +89,7 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
             ]}>
               <%= @product.name %>
             </h2>
-            <div class="flex mb-4 flex-col gap-4 lg:gap-8">
+            <div class="flex flex-col gap-4 mb-4 lg:gap-8">
               <div class="mr-4">
                 <span class={[
                   "text-3xl font-bold text-gray-900 dark:text-white",
@@ -111,7 +114,7 @@ defmodule FireSaleWeb.ProductLive.ProductListing do
 
             <div>
               <span class="font-bold text-gray-700 dark:text-gray-300">Description:</span>
-              <p class="text-gray-600 dark:text-gray-300 text-sm mt-2 whitespace-pre-line">
+              <p class="mt-2 text-sm text-gray-600 whitespace-pre-line dark:text-gray-300">
                 <%= @product.description %>
               </p>
             </div>
