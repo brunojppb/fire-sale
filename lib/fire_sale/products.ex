@@ -92,13 +92,19 @@ defmodule FireSale.Products do
   def get_product(id), do: Repo.get(Product, id)
 
   def get_product_with_images(id) do
-    query =
-      from p in Product,
-        where: p.id == ^id,
-        order_by: fragment("? DESC", p.inserted_at),
-        preload: [:product_images]
+    case Integer.parse(id) do
+      {int_id, _reminder} ->
+        query =
+          from p in Product,
+            where: p.id == ^int_id,
+            order_by: fragment("? DESC", p.inserted_at),
+            preload: [:product_images]
 
-    Repo.one(query)
+        Repo.one(query)
+
+      _ ->
+        nil
+    end
   end
 
   def get_published_product(id) do
