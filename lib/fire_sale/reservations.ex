@@ -112,6 +112,17 @@ defmodule FireSale.Reservations do
     Repo.all(Reservation)
   end
 
+  def list_confirmed_reservations do
+    query =
+      from r in Reservation,
+        join: p in Product,
+        on: r.product_id == p.id,
+        where: r.status == "confirmed",
+        preload: [:product]
+
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single reservation.
 
