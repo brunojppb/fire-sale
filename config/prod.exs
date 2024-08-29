@@ -19,8 +19,7 @@ config :swoosh, local: false
 config :logger, level: :info
 
 config :sentry,
-  dsn:
-    "https://45740913f35301b141221a7b030098ed@o4507576027840512.ingest.de.sentry.io/4507576030789712",
+  dsn: System.get_env("SENTRY_DSN"),
   environment_name: Mix.env(),
   enable_source_code_context: true,
   root_source_code_paths: [File.cwd!()]
